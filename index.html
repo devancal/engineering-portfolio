@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- v8-direct-glb-v1 -->
+<!-- v8-direct-glb-v2 -->
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Devan Calabrese — Mechanical Engineering student portfolio for Summer 2027 internships.">
 <title>Devan Calabrese | Mechanical Engineering</title>
@@ -25,8 +25,8 @@ header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-
 <section id="home" class="hero"><p class="eyebrow">SUMMER 2027 ENGINEERING INTERNSHIP PORTFOLIO</p><h1>Mechanical design, CAD, and hands-on engineering.</h1><p class="lede">I’m Devan Calabrese, a Mechanical Engineering student at The Ohio State University. I’m building experience through mechanical system design, parametric CAD, Formula Buckeye, and engineering-focused programming.</p><div class="actions"><a class="btn primary" href="#projects">View Projects</a><a class="btn" href="#contact">Resume & Contact</a></div><div class="facts"><div><strong>3.86</strong>OSU GPA</div><div><strong>May 2029</strong>Expected Graduation</div><div><strong>CAD</strong>Onshape + SolidWorks</div></div></section>
 <section id="projects" class="section"><p class="eyebrow">SELECTED WORK</p><h2>Projects built around mechanisms, motion, and design.</h2><p class="section-intro">A concise look at the mechanical systems I’ve designed and modeled.</p><div class="grid">
 <article class="card"><div class="viewer" id="viewer">
-<model-viewer id="v8-model" src="/assets/v8-engine.glb" poster="/assets/v8-poster.png" alt="Interactive 3D V8 engine CAD model" camera-controls auto-rotate rotation-per-second="16deg" shadow-intensity="1" exposure="1.05" interaction-prompt="auto" touch-action="pan-y" loading="eager" reveal="auto"></model-viewer>
-<span class="hint" id="viewer-hint">Drag to rotate · Scroll to zoom</span>
+<model-viewer id="v8-model" src="/V8%20engine.glb" alt="Interactive 3D V8 engine CAD model" camera-controls auto-rotate rotation-per-second="16deg" shadow-intensity="1" exposure="1.05" interaction-prompt="auto" touch-action="pan-y" loading="eager" reveal="auto"></model-viewer>
+<span class="hint" id="viewer-hint">Loading 3D model…</span>
 </div><div class="content"><div class="meta"><span>Personal Project</span><span>Jan–Mar 2026</span></div><h3>V8 Engine Internal Combustion Design</h3><p>Designed and assembled a complex mechanical system in SolidWorks and Onshape using parametric modeling; validated component motion and refined geometry to eliminate interference.</p><div class="tags"><span>Onshape</span><span>SolidWorks</span><span>Parametric CAD</span><span>Motion</span></div></div></article>
 <article class="card"><div class="placeholder">WATER PUMP PROJECT IMAGE<br>PLACEHOLDER</div><div class="content"><div class="meta"><span>Course Project</span><span>Fall 2025</span></div><h3>Water Pump Design & Fabrication</h3><p>Designed a CAD concept to transport water vertically and horizontally using an animal-powered bucket-and-gear conveyor with modeled gears, shafts, buckets, and support structures.</p><div class="tags"><span>CAD</span><span>Gear Train</span><span>Mechanical Systems</span></div></div></article>
 </div></section>
@@ -37,6 +37,6 @@ header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
 <script>
 const m=document.getElementById('v8-model'),h=document.getElementById('viewer-hint');
-if(m&&h){m.addEventListener('load',()=>h.textContent='Drag to rotate · Scroll to zoom');m.addEventListener('error',()=>h.textContent='3D unavailable — showing render');}
+if(m&&h){m.addEventListener('load',()=>h.textContent='Drag to rotate · Scroll to zoom');m.addEventListener('error',()=>h.textContent='3D model failed to load');}
 </script>
 </body></html>

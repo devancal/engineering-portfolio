@@ -1,0 +1,40 @@
+/* Header + résumé reliability overrides */
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  width:100%;
+  max-width:1280px;
+  background:rgba(245,244,240,.97);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.brand{white-space:nowrap;min-width:max-content}
+.brand-symbol{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:40px;
+  height:42px;
+  flex:0 0 40px;
+  padding:0;
+  background:var(--accent,#bc382a);
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:25px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:-2.5px;
+  text-transform:lowercase;
+  overflow:hidden;
+}
+.brand-dot{position:absolute;top:7px;right:7px;width:4px;height:4px;background:#fff}
+.brand-copy{display:block;line-height:1.15}
+.brand-sub{white-space:nowrap}
+.site-header nav{flex-shrink:0}
+@media(max-width:760px){
+  .site-header{position:sticky;top:0}
+  .brand-symbol{width:34px;height:36px;flex-basis:34px;font-size:22px}
+  .brand-dot{top:6px;right:6px;width:3px;height:3px}
+}

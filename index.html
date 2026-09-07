@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- v8-direct-glb-v2 -->
+<!-- v8-three-exploded-v1 -->
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Devan Calabrese — Mechanical Engineering student portfolio for Summer 2027 internships.">
 <title>Devan Calabrese | Mechanical Engineering</title>
@@ -12,20 +12,23 @@ header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-
 .hero,.section{max-width:1180px;margin:auto;padding:86px 6vw}.hero{min-height:78vh;display:grid;align-content:center}.eyebrow{color:#e43a59;text-transform:uppercase;letter-spacing:.14em;font-size:.76rem;font-weight:800}h1{font-size:clamp(3rem,8vw,6.4rem);line-height:.94;letter-spacing:-.055em;max-width:1000px;margin:18px 0 24px}.lede{max-width:760px;color:var(--muted);font-size:1.14rem}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{padding:12px 18px;border:1px solid var(--line);border-radius:9px;font-weight:750}.btn.primary{background:var(--scarlet);border-color:var(--scarlet)}.facts{display:flex;gap:32px;flex-wrap:wrap;margin-top:44px;color:var(--muted)}.facts strong{display:block;color:#fff;font-size:1.35rem}
 .section h2{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;letter-spacing:-.04em;margin:.35em 0}.section-intro{max-width:760px;color:var(--muted);margin-bottom:34px}
 .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:22px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}.content{padding:24px}.meta{display:flex;justify-content:space-between;gap:10px;color:#e43a59;text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:800}.content h3{font-size:1.45rem;margin:12px 0 8px}.content p{color:var(--muted)}.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.tags span{border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:.78rem}
-.viewer{height:500px;position:relative;background:radial-gradient(circle at 50% 42%,#202833 0,#10151b 48%,#090b0f 100%);overflow:hidden}.viewer model-viewer{width:100%;height:100%;display:block;--poster-color:transparent}.hint{position:absolute;left:14px;bottom:14px;background:#07090ddd;border:1px solid var(--line);border-radius:999px;padding:7px 11px;color:#c6ccd5;font-size:.74rem}
+.viewer{height:500px;position:relative;background:radial-gradient(circle at 50% 42%,#202833 0,#10151b 48%,#090b0f 100%);overflow:hidden}.viewer canvas{width:100%;height:100%;display:block}.hint{position:absolute;left:14px;bottom:14px;background:#07090ddd;border:1px solid var(--line);border-radius:999px;padding:7px 11px;color:#c6ccd5;font-size:.74rem;pointer-events:none}.viewer-controls{position:absolute;right:14px;top:14px;display:flex;gap:8px;align-items:center;z-index:3}.viewer-control{appearance:none;border:1px solid #444d59;background:#090c11dd;color:#f3f5f7;border-radius:8px;padding:8px 11px;font:700 .76rem/1 Inter,ui-sans-serif,system-ui;cursor:pointer;backdrop-filter:blur(8px)}.viewer-control:hover{border-color:#697584}.viewer-control.active{background:var(--scarlet);border-color:var(--scarlet)}.explode-slider{width:92px;accent-color:var(--scarlet);cursor:pointer}.axis-badge{position:absolute;left:14px;top:14px;background:#090c11d9;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:.68rem;color:#c6ccd5;pointer-events:none}.axis-badge b{color:#fff}
 .placeholder{height:500px;display:grid;place-items:center;text-align:center;padding:30px;background:linear-gradient(135deg,#151a21,#0e1116);color:#6f7885;font-size:.75rem;letter-spacing:.11em}
 .skills{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.skill,.edu{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}.skill h3,.edu h3{margin-top:0}.skill p,.edu p{color:var(--muted)}.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .contact{text-align:center;border-top:1px solid var(--line)}.contact h2{font-size:clamp(2.5rem,6vw,4.8rem);letter-spacing:-.05em}footer{border-top:1px solid var(--line);padding:26px 6vw;color:var(--muted);font-size:.84rem}
-@media(max-width:820px){nav{display:none}.hero,.section{padding:68px 5vw}.grid,.edu-grid{grid-template-columns:1fr}.skills{grid-template-columns:1fr 1fr}.viewer,.placeholder{height:390px}}@media(max-width:520px){.skills{grid-template-columns:1fr}}
+@media(max-width:820px){nav{display:none}.hero,.section{padding:68px 5vw}.grid,.edu-grid{grid-template-columns:1fr}.skills{grid-template-columns:1fr 1fr}.viewer,.placeholder{height:390px}.explode-slider{display:none}}@media(max-width:520px){.skills{grid-template-columns:1fr}.viewer-controls{right:9px;top:9px}.axis-badge{left:9px;top:9px}}
 </style>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"></head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+</head>
 <body>
 <header><a class="brand" href="#home">DC<span>.</span></a><nav><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#education">Education</a><a href="#contact">Contact</a></nav></header>
 <main>
 <section id="home" class="hero"><p class="eyebrow">SUMMER 2027 ENGINEERING INTERNSHIP PORTFOLIO</p><h1>Mechanical design, CAD, and hands-on engineering.</h1><p class="lede">I’m Devan Calabrese, a Mechanical Engineering student at The Ohio State University. I’m building experience through mechanical system design, parametric CAD, Formula Buckeye, and engineering-focused programming.</p><div class="actions"><a class="btn primary" href="#projects">View Projects</a><a class="btn" href="#contact">Resume & Contact</a></div><div class="facts"><div><strong>3.86</strong>OSU GPA</div><div><strong>May 2029</strong>Expected Graduation</div><div><strong>CAD</strong>Onshape + SolidWorks</div></div></section>
 <section id="projects" class="section"><p class="eyebrow">SELECTED WORK</p><h2>Projects built around mechanisms, motion, and design.</h2><p class="section-intro">A concise look at the mechanical systems I’ve designed and modeled.</p><div class="grid">
-<article class="card"><div class="viewer" id="viewer">
-<model-viewer id="v8-model" src="/V8%20engine.glb" alt="Interactive 3D V8 engine CAD model" camera-controls auto-rotate rotation-per-second="16deg" shadow-intensity="1" exposure="1.05" interaction-prompt="auto" touch-action="pan-y" loading="eager" reveal="auto"></model-viewer>
+<article class="card"><div class="viewer" id="v8-viewer">
+<div class="axis-badge"><b>Z</b> = UP</div>
+<div class="viewer-controls"><button class="viewer-control" id="explode-btn" type="button">Explode</button><input class="explode-slider" id="explode-slider" type="range" min="0" max="100" value="55" aria-label="Explosion distance"><button class="viewer-control" id="reset-btn" type="button">Reset</button></div>
 <span class="hint" id="viewer-hint">Loading 3D model…</span>
 </div><div class="content"><div class="meta"><span>Personal Project</span><span>Jan–Mar 2026</span></div><h3>V8 Engine Internal Combustion Design</h3><p>Designed and assembled a complex mechanical system in SolidWorks and Onshape using parametric modeling; validated component motion and refined geometry to eliminate interference.</p><div class="tags"><span>Onshape</span><span>SolidWorks</span><span>Parametric CAD</span><span>Motion</span></div></div></article>
 <article class="card"><div class="placeholder">WATER PUMP PROJECT IMAGE<br>PLACEHOLDER</div><div class="content"><div class="meta"><span>Course Project</span><span>Fall 2025</span></div><h3>Water Pump Design & Fabrication</h3><p>Designed a CAD concept to transport water vertically and horizontally using an animal-powered bucket-and-gear conveyor with modeled gears, shafts, buckets, and support structures.</p><div class="tags"><span>CAD</span><span>Gear Train</span><span>Mechanical Systems</span></div></div></article>
@@ -34,9 +37,118 @@ header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-
 <section id="education" class="section"><p class="eyebrow">EDUCATION + INVOLVEMENT</p><h2>Mechanical Engineering at Ohio State.</h2><div class="edu-grid"><div class="edu"><h3>The Ohio State University</h3><p>B.S. Mechanical Engineering · Expected May 2029</p><p>GPA 3.86 · Dean’s List Spring 2026</p><p>Formula Buckeye · ASME</p></div><div class="edu"><h3>University of Cincinnati</h3><p>Mechanical Engineering · Fall 2025</p><p>GPA 3.92 · Dean’s List</p><p>Cincinnatus Century Scholar</p></div></div></section>
 <section id="contact" class="section contact"><p class="eyebrow">LET’S CONNECT</p><h2>Looking for a Summer 2027 engineering internship.</h2><p class="lede" style="margin:0 auto 24px">Interested in mechanical design, engines, systems, reliability, and hands-on engineering.</p><div class="actions" style="justify-content:center"><a class="btn primary" href="mailto:Calabrese.90@osu.edu">Calabrese.90@osu.edu</a><a class="btn" href="https://www.linkedin.com/in/devancalabrese" target="_blank" rel="noopener">LinkedIn</a></div></section>
 </main><footer>Devan Calabrese · Mechanical Engineering · The Ohio State University</footer>
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
-<script>
-const m=document.getElementById('v8-model'),h=document.getElementById('viewer-hint');
-if(m&&h){m.addEventListener('load',()=>h.textContent='Drag to rotate · Scroll to zoom');m.addEventListener('error',()=>h.textContent='3D model failed to load');}
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const host=document.getElementById('v8-viewer');
+const hint=document.getElementById('viewer-hint');
+const explodeBtn=document.getElementById('explode-btn');
+const explodeSlider=document.getElementById('explode-slider');
+const resetBtn=document.getElementById('reset-btn');
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(34,1,0.001,100);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.15;
+host.prepend(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xffffff,0x25303c,2.25));
+const key=new THREE.DirectionalLight(0xffffff,3.2); key.position.set(3,5,4); scene.add(key);
+const fill=new THREE.DirectionalLight(0xd9e7ff,1.7); fill.position.set(-4,2,-3); scene.add(fill);
+const rim=new THREE.DirectionalLight(0xffffff,1.4); rim.position.set(0,-2,5); scene.add(rim);
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;
+controls.dampingFactor=.07;
+controls.autoRotate=true;
+controls.autoRotateSpeed=.85;
+controls.target.set(0,0,0);
+
+let wrapper=null, engineRoot=null, parts=[], exploded=false, maxDim=1, defaultCamera=new THREE.Vector3();
+const loader=new GLTFLoader();
+
+loader.load('/V8%20engine.glb',gltf=>{
+  wrapper=new THREE.Group();
+  wrapper.rotation.x=-Math.PI/2; // CAD Z-up -> Three.js Y-up
+  wrapper.add(gltf.scene);
+  scene.add(wrapper);
+  wrapper.updateMatrixWorld(true);
+
+  let box=new THREE.Box3().setFromObject(wrapper);
+  const center=box.getCenter(new THREE.Vector3());
+  wrapper.position.sub(center); // true visual center becomes orbit pivot
+  wrapper.updateMatrixWorld(true);
+  box=new THREE.Box3().setFromObject(wrapper);
+  const size=box.getSize(new THREE.Vector3());
+  maxDim=Math.max(size.x,size.y,size.z);
+
+  camera.near=maxDim/500;
+  camera.far=maxDim*30;
+  camera.updateProjectionMatrix();
+  defaultCamera.set(maxDim*1.45,maxDim*.9,maxDim*1.45);
+  camera.position.copy(defaultCamera);
+  controls.minDistance=maxDim*.45;
+  controls.maxDistance=maxDim*6;
+  controls.target.set(0,0,0);
+  controls.update();
+
+  engineRoot=gltf.scene.getObjectByName('V8 engine') || gltf.scene.children[0] || gltf.scene;
+  engineRoot.updateMatrixWorld(true);
+  const originLocal=engineRoot.worldToLocal(new THREE.Vector3(0,0,0));
+  const candidates=engineRoot.children.length>1 ? engineRoot.children : gltf.scene.children;
+  parts=candidates.map(part=>{
+    const pbox=new THREE.Box3().setFromObject(part);
+    const worldCenter=pbox.getCenter(new THREE.Vector3());
+    const localCenter=engineRoot.worldToLocal(worldCenter.clone());
+    let dir=localCenter.sub(originLocal).normalize();
+    if(!Number.isFinite(dir.x)||dir.lengthSq()<1e-8) dir=new THREE.Vector3(0,1,0);
+    return {obj:part,base:part.position.clone(),dir,target:part.position.clone()};
+  });
+
+  hint.textContent=`Drag to rotate · Scroll to zoom · ${parts.length} component groups`;
+},undefined,err=>{
+  console.error(err);
+  hint.textContent='3D model failed to load';
+});
+
+function setExplosion(){
+  if(!parts.length) return;
+  const slider=Number(explodeSlider.value)/100;
+  const distance=exploded ? maxDim*(.12+.34*slider) : 0;
+  for(const p of parts) p.target.copy(p.base).addScaledVector(p.dir,distance);
+  explodeBtn.classList.toggle('active',exploded);
+  explodeBtn.textContent=exploded?'Assemble':'Explode';
+}
+explodeBtn.addEventListener('click',()=>{exploded=!exploded;setExplosion();});
+explodeSlider.addEventListener('input',()=>{if(exploded)setExplosion();});
+resetBtn.addEventListener('click',()=>{
+  exploded=false;setExplosion();
+  camera.position.copy(defaultCamera);
+  controls.target.set(0,0,0);
+  controls.autoRotate=true;
+  controls.update();
+});
+renderer.domElement.addEventListener('pointerdown',()=>{controls.autoRotate=false},{passive:true});
+
+function resize(){
+  const w=host.clientWidth,h=host.clientHeight;
+  renderer.setSize(w,h,false);
+  camera.aspect=w/h;
+  camera.updateProjectionMatrix();
+}
+const ro=new ResizeObserver(resize);ro.observe(host);resize();
+
+function animate(){
+  requestAnimationFrame(animate);
+  for(const p of parts) p.obj.position.lerp(p.target,.085);
+  controls.update();
+  renderer.render(scene,camera);
+}
+animate();
 </script>
 </body></html>

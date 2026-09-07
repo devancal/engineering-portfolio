@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://engineering-portfolio-nu.vercel.app/sitemap.xml

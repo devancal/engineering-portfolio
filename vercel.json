@@ -1,5 +1,12 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/Devan-Calabrese-Resume.pdf",
+      "destination": "/Calabrese_Devan_Resume.pdf",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/",

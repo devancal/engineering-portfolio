@@ -9,7 +9,68 @@ renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpac
 scene.add(new THREE.HemisphereLight(0xffffff,0x3b4742,2.4));const key=new THREE.DirectionalLight(0xffffff,3.1);key.position.set(3,5,4);scene.add(key);const fill=new THREE.DirectionalLight(0xdde9ff,1.6);fill.position.set(-4,2,-3);scene.add(fill);
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.07;controls.autoRotate=true;controls.autoRotateSpeed=.8;controls.target.set(0,0,0);
 let parts=[],exploded=false,maxDim=1,defaultCamera=new THREE.Vector3();
-new GLTFLoader().load('/V8%20engine.glb',gltf=>{const wrapper=new THREE.Group();wrapper.rotation.x=-Math.PI/2;wrapper.add(gltf.scene);scene.add(wrapper);wrapper.updateMatrixWorld(true);let box=new THREE.Box3().setFromObject(wrapper);const center=box.getCenter(new THREE.Vector3());wrapper.position.sub(center);wrapper.updateMatrixWorld(true);box=new THREE.Box3().setFromObject(wrapper);const size=box.getSize(new THREE.Vector3());maxDim=Math.max(size.x,size.y,size.z);camera.near=maxDim/500;camera.far=maxDim*30;camera.updateProjectionMatrix();defaultCamera.set(maxDim*1.45,maxDim*.9,maxDim*1.45);camera.position.copy(defaultCamera);controls.minDistance=maxDim*.45;controls.maxDistance=maxDim*6;controls.update();const engineRoot=gltf.scene.getObjectByName('V8 engine')||gltf.scene.children[0]||gltf.scene;engineRoot.updateMatrixWorld(true);const originLocal=engineRoot.worldToLocal(new THREE.Vector3(0,0,0));const candidates=engineRoot.children.length>1?engineRoot.children:gltf.scene.children;parts=candidates.map(part=>{const pbox=new THREE.Box3().setFromObject(part),wc=pbox.getCenter(new THREE.Vector3()),lc=engineRoot.worldToLocal(wc.clone());let dir=lc.sub(originLocal).normalize();if(!Number.isFinite(dir.x)||dir.lengthSq()<1e-8)dir=new THREE.Vector3(0,1,0);return{obj:part,base:part.position.clone(),dir,target:part.position.clone()}});hint.textContent=`Drag to rotate · scroll to zoom · ${parts.length} groups`},undefined,()=>hint.textContent='3D model failed to load');
-function setExplosion(){if(!parts.length)return;const slider=Number(explodeSlider.value)/100,distance=exploded?maxDim*(.12+.34*slider):0;for(const p of parts)p.target.copy(p.base).addScaledVector(p.dir,distance);explodeBtn.classList.toggle('active',exploded);explodeBtn.textContent=exploded?'Assemble':'Explode'}
-explodeBtn.onclick=()=>{exploded=!exploded;setExplosion()};explodeSlider.oninput=()=>{if(exploded)setExplosion()};resetBtn.onclick=()=>{exploded=false;setExplosion();camera.position.copy(defaultCamera);controls.target.set(0,0,0);controls.autoRotate=true;controls.update()};renderer.domElement.addEventListener('pointerdown',()=>controls.autoRotate=false,{passive:true});
-function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}new ResizeObserver(resize).observe(host);resize();(function animate(){requestAnimationFrame(animate);for(const p of parts)p.obj.position.lerp(p.target,.085);controls.update();renderer.render(scene,camera)})();}
+
+function instanceNumber(name){const m=name.match(/_(\d+)$/);return m?Number(m[1]):0}
+function teardownOffset(obj){
+  const n=obj.name.toLowerCase();
+  const base=obj.position;
+  const bank=base.y>=0?1:-1;
+  const idx=instanceNumber(n);
+  const v=new THREE.Vector3();
+
+  // GLB local +Z becomes visible UP after the wrapper rotation.
+  if(n.includes('engine block')) return v.set(0,0,0);
+  if(n.includes('air filter')) return v.set(0,0,1.55);
+  if(n.includes('intake manifold')) return v.set(0,0,1.15);
+
+  // Major bank assemblies: clearly up and away from the block.
+  if(n.includes('cam cover')) return v.set(0,bank*.58,1.18);
+  if(n.includes('cylinder head')) return v.set(0,bank*.44,.88);
+  if(n.includes('exhaust')) return v.set(0,bank*1.28,.18);
+
+  // Eight cylinder groups. Keep their crank-axis spacing, but pull each bank
+  // out and stack the piston pieces in distinct removal layers.
+  if(n.includes('sparkplug')) return v.set(0,bank*.62,.98 + (idx%4)*.025);
+  if(n.includes('piston ring')) return v.set(0,bank*.50,.78 + (idx%8)*.018);
+  if(n.includes('piston cap')) return v.set(0,bank*.50,.68 + (idx%8)*.018);
+  if(n.includes('connecting pin')) return v.set(0,bank*.42,.55 + (idx%8)*.014);
+  if(n.includes('connecting rod')) return v.set(0,bank*.38,.40 + (idx%8)*.012);
+
+  // Rotating hardware leaves along the crank/front-rear axis.
+  if(n.includes('camshaft')) return v.set(base.x>=0?1.15:-1.15,bank*.28,.52);
+  if(n.includes('cam gear')) return v.set(1.42,bank*.30,.55);
+  if(n.includes('crankshaft bushing')) return v.set(base.x>=0?1.05:-1.05,0,-.10);
+  if(n.includes('crankshaft')) return v.set(-1.28,0,-.08);
+  if(n.includes('crank gear')) return v.set(1.30,0,-.03);
+
+  if(n.includes('oil pan')) return v.set(0,0,-1.05);
+  return v.set(0,bank*.18,.28);
+}
+
+new GLTFLoader().load('/V8%20engine.glb',gltf=>{
+  const wrapper=new THREE.Group();wrapper.rotation.x=-Math.PI/2;wrapper.add(gltf.scene);scene.add(wrapper);
+  wrapper.updateMatrixWorld(true);let box=new THREE.Box3().setFromObject(wrapper);const center=box.getCenter(new THREE.Vector3());wrapper.position.sub(center);wrapper.updateMatrixWorld(true);
+  box=new THREE.Box3().setFromObject(wrapper);const size=box.getSize(new THREE.Vector3());maxDim=Math.max(size.x,size.y,size.z);camera.near=maxDim/500;camera.far=maxDim*40;camera.updateProjectionMatrix();
+  defaultCamera.set(maxDim*1.45,maxDim*.9,maxDim*1.45);camera.position.copy(defaultCamera);controls.minDistance=maxDim*.45;controls.maxDistance=maxDim*9;controls.update();
+
+  const engineRoot=gltf.scene.getObjectByName('V8 engine')||gltf.scene.children[0]||gltf.scene;
+  // Animate the actual named occurrence nodes instead of generic geometry groups.
+  const occurrenceNodes=engineRoot.children.filter(o=>(o.name||'').toLowerCase().startsWith('occurrence of '));
+  parts=occurrenceNodes.map(obj=>({obj,base:obj.position.clone(),offset:teardownOffset(obj).multiplyScalar(maxDim),target:obj.position.clone()}));
+  hint.textContent=`Drag to rotate · scroll to zoom · ${parts.length} individual components`;
+},undefined,()=>hint.textContent='3D model failed to load');
+
+function setExplosion(){
+  if(!parts.length)return;
+  const t=exploded?Number(explodeSlider.value)/100:0;
+  for(const p of parts)p.target.copy(p.base).addScaledVector(p.offset,t);
+  explodeBtn.classList.toggle('active',exploded);explodeBtn.textContent=exploded?'Assemble':'Explode';
+}
+explodeBtn.onclick=()=>{exploded=!exploded;setExplosion()};
+explodeSlider.oninput=()=>{if(exploded)setExplosion()};
+resetBtn.onclick=()=>{exploded=false;setExplosion();camera.position.copy(defaultCamera);controls.target.set(0,0,0);controls.autoRotate=true;controls.update()};
+renderer.domElement.addEventListener('pointerdown',()=>controls.autoRotate=false,{passive:true});
+function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+new ResizeObserver(resize).observe(host);resize();
+(function animate(){requestAnimationFrame(animate);for(const p of parts)p.obj.position.lerp(p.target,.085);controls.update();renderer.render(scene,camera)})();
+}

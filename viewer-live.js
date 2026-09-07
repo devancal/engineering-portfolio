@@ -1,76 +1,171 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+
 const host=document.getElementById('v8-viewer');
 if(host){
-const hint=document.getElementById('viewer-hint'),explodeBtn=document.getElementById('explode-btn'),explodeSlider=document.getElementById('explode-slider'),resetBtn=document.getElementById('reset-btn');
-const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(34,1,.001,100),renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;host.prepend(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xffffff,0x3b4742,2.4));const key=new THREE.DirectionalLight(0xffffff,3.1);key.position.set(3,5,4);scene.add(key);const fill=new THREE.DirectionalLight(0xdde9ff,1.6);fill.position.set(-4,2,-3);scene.add(fill);
-const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.07;controls.autoRotate=true;controls.autoRotateSpeed=.8;controls.target.set(0,0,0);
-let parts=[],exploded=false,maxDim=1,defaultCamera=new THREE.Vector3();
+  const hint=document.getElementById('viewer-hint');
+  const explodeBtn=document.getElementById('explode-btn');
+  const explodeSlider=document.getElementById('explode-slider');
+  const resetBtn=document.getElementById('reset-btn');
 
-function instanceNumber(name){const m=name.match(/_(\d+)$/);return m?Number(m[1]):0}
-function teardownOffset(obj){
-  const n=obj.name.toLowerCase();
-  const base=obj.position;
-  const bank=base.y>=0?1:-1;
-  const idx=instanceNumber(n);
-  const v=new THREE.Vector3();
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(34,1,.001,100);
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.12;
+  host.prepend(renderer.domElement);
 
-  // GLB local +Z becomes visible UP after the wrapper rotation.
-  if(n.includes('engine block')) return v.set(0,0,0);
-  if(n.includes('air filter')) return v.set(0,0,1.55);
-  if(n.includes('intake manifold')) return v.set(0,0,1.15);
+  scene.add(new THREE.HemisphereLight(0xffffff,0x3b4742,2.4));
+  const key=new THREE.DirectionalLight(0xffffff,3.1);key.position.set(3,5,4);scene.add(key);
+  const fill=new THREE.DirectionalLight(0xdde9ff,1.6);fill.position.set(-4,2,-3);scene.add(fill);
 
-  // Major bank assemblies: clearly up and away from the block.
-  if(n.includes('cam cover')) return v.set(0,bank*.58,1.18);
-  if(n.includes('cylinder head')) return v.set(0,bank*.44,.88);
-  if(n.includes('exhaust')) return v.set(0,bank*1.28,.18);
+  const controls=new OrbitControls(camera,renderer.domElement);
+  controls.enableDamping=true;
+  controls.dampingFactor=.07;
+  controls.autoRotate=true;
+  controls.autoRotateSpeed=.8;
+  controls.target.set(0,0,0);
 
-  // Eight cylinder groups. Keep their crank-axis spacing, but pull each bank
-  // out and stack the piston pieces in distinct removal layers.
-  if(n.includes('sparkplug')) return v.set(0,bank*.62,.98 + (idx%4)*.025);
-  if(n.includes('piston ring')) return v.set(0,bank*.50,.78 + (idx%8)*.018);
-  if(n.includes('piston cap')) return v.set(0,bank*.50,.68 + (idx%8)*.018);
-  if(n.includes('connecting pin')) return v.set(0,bank*.42,.55 + (idx%8)*.014);
-  if(n.includes('connecting rod')) return v.set(0,bank*.38,.40 + (idx%8)*.012);
+  let parts=[];
+  let exploded=false;
+  let maxDim=1;
+  const defaultCamera=new THREE.Vector3();
 
-  // Rotating hardware leaves along the crank/front-rear axis.
-  if(n.includes('camshaft')) return v.set(base.x>=0?1.15:-1.15,bank*.28,.52);
-  if(n.includes('cam gear')) return v.set(1.42,bank*.30,.55);
-  if(n.includes('crankshaft bushing')) return v.set(base.x>=0?1.05:-1.05,0,-.10);
-  if(n.includes('crankshaft')) return v.set(-1.28,0,-.08);
-  if(n.includes('crank gear')) return v.set(1.30,0,-.03);
+  function instanceNumber(name){
+    const m=(name||'').match(/_(\d+)$/);
+    return m?Number(m[1]):0;
+  }
 
-  if(n.includes('oil pan')) return v.set(0,0,-1.05);
-  return v.set(0,bank*.18,.28);
-}
+  function teardownOffset(obj){
+    const n=(obj.name||'').toLowerCase();
+    const base=obj.position;
+    const bank=base.y>=0?1:-1;
+    const idx=instanceNumber(n);
+    const v=new THREE.Vector3();
 
-new GLTFLoader().load('/V8%20engine.glb',gltf=>{
-  const wrapper=new THREE.Group();wrapper.rotation.x=-Math.PI/2;wrapper.add(gltf.scene);scene.add(wrapper);
-  wrapper.updateMatrixWorld(true);let box=new THREE.Box3().setFromObject(wrapper);const center=box.getCenter(new THREE.Vector3());wrapper.position.sub(center);wrapper.updateMatrixWorld(true);
-  box=new THREE.Box3().setFromObject(wrapper);const size=box.getSize(new THREE.Vector3());maxDim=Math.max(size.x,size.y,size.z);camera.near=maxDim/500;camera.far=maxDim*40;camera.updateProjectionMatrix();
-  defaultCamera.set(maxDim*1.45,maxDim*.9,maxDim*1.45);camera.position.copy(defaultCamera);controls.minDistance=maxDim*.45;controls.maxDistance=maxDim*9;controls.update();
+    if(n.includes('engine block')) return v.set(0,0,0);
+    if(n.includes('air filter')) return v.set(0,0,1.55);
+    if(n.includes('intake manifold')) return v.set(0,0,1.15);
+    if(n.includes('cam cover')) return v.set(0,bank*.58,1.18);
+    if(n.includes('cylinder head')) return v.set(0,bank*.44,.88);
+    if(n.includes('exhaust')) return v.set(0,bank*1.28,.18);
+    if(n.includes('sparkplug')) return v.set(0,bank*.62,.98+(idx%4)*.025);
+    if(n.includes('piston ring')) return v.set(0,bank*.50,.78+(idx%8)*.018);
+    if(n.includes('piston cap')) return v.set(0,bank*.50,.68+(idx%8)*.018);
+    if(n.includes('connecting pin')) return v.set(0,bank*.42,.55+(idx%8)*.014);
+    if(n.includes('connecting rod')) return v.set(0,bank*.38,.40+(idx%8)*.012);
+    if(n.includes('camshaft')) return v.set(base.x>=0?1.15:-1.15,bank*.28,.52);
+    if(n.includes('cam gear')) return v.set(1.42,bank*.30,.55);
+    if(n.includes('crankshaft bushing')) return v.set(base.x>=0?1.05:-1.05,0,-.10);
+    if(n.includes('crankshaft')) return v.set(-1.28,0,-.08);
+    if(n.includes('crank gear')) return v.set(1.30,0,-.03);
+    if(n.includes('oil pan')) return v.set(0,0,-1.05);
+    return v.set(0,bank*.18,.28);
+  }
 
-  const engineRoot=gltf.scene.getObjectByName('V8 engine')||gltf.scene.children[0]||gltf.scene;
-  // Animate the actual named occurrence nodes instead of generic geometry groups.
-  const occurrenceNodes=engineRoot.children.filter(o=>(o.name||'').toLowerCase().startsWith('occurrence of '));
-  parts=occurrenceNodes.map(obj=>({obj,base:obj.position.clone(),offset:teardownOffset(obj).multiplyScalar(maxDim),target:obj.position.clone()}));
-  hint.textContent=`Drag to rotate · scroll to zoom · ${parts.length} individual components`;
-},undefined,()=>hint.textContent='3D model failed to load');
+  function isMechanicalPart(obj){
+    const n=(obj.name||'').toLowerCase();
+    return [
+      'engine block','air filter','intake manifold','cam cover','cylinder head','exhaust',
+      'sparkplug','piston ring','piston cap','connecting pin','connecting rod',
+      'camshaft','cam gear','crankshaft bushing','crankshaft','crank gear','oil pan'
+    ].some(token=>n.includes(token));
+  }
 
-function setExplosion(){
-  if(!parts.length)return;
-  const t=exploded?Number(explodeSlider.value)/100:0;
-  for(const p of parts)p.target.copy(p.base).addScaledVector(p.offset,t);
-  explodeBtn.classList.toggle('active',exploded);explodeBtn.textContent=exploded?'Assemble':'Explode';
-}
-explodeBtn.onclick=()=>{exploded=!exploded;setExplosion()};
-explodeSlider.oninput=()=>{if(exploded)setExplosion()};
-resetBtn.onclick=()=>{exploded=false;setExplosion();camera.position.copy(defaultCamera);controls.target.set(0,0,0);controls.autoRotate=true;controls.update()};
-renderer.domElement.addEventListener('pointerdown',()=>controls.autoRotate=false,{passive:true});
-function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
-new ResizeObserver(resize).observe(host);resize();
-(function animate(){requestAnimationFrame(animate);for(const p of parts)p.obj.position.lerp(p.target,.085);controls.update();renderer.render(scene,camera)})();
+  new GLTFLoader().load('/V8%20engine.glb',gltf=>{
+    const wrapper=new THREE.Group();
+    wrapper.rotation.x=-Math.PI/2;
+    wrapper.add(gltf.scene);
+    scene.add(wrapper);
+
+    wrapper.updateMatrixWorld(true);
+    let box=new THREE.Box3().setFromObject(wrapper);
+    const center=box.getCenter(new THREE.Vector3());
+    wrapper.position.sub(center);
+    wrapper.updateMatrixWorld(true);
+    box=new THREE.Box3().setFromObject(wrapper);
+    const size=box.getSize(new THREE.Vector3());
+    maxDim=Math.max(size.x,size.y,size.z);
+
+    camera.near=maxDim/500;
+    camera.far=maxDim*40;
+    camera.updateProjectionMatrix();
+    defaultCamera.set(maxDim*1.45,maxDim*.9,maxDim*1.45);
+    camera.position.copy(defaultCamera);
+    controls.minDistance=maxDim*.45;
+    controls.maxDistance=maxDim*9;
+    controls.update();
+
+    const candidates=[];
+    gltf.scene.traverse(obj=>{
+      if(obj!==gltf.scene && isMechanicalPart(obj)) candidates.push(obj);
+    });
+
+    const candidateSet=new Set(candidates);
+    const leaves=candidates.filter(obj=>{
+      let p=obj.parent;
+      while(p && p!==gltf.scene){
+        if(candidateSet.has(p)) return false;
+        p=p.parent;
+      }
+      return true;
+    });
+
+    const unique=[...new Set(leaves)];
+    parts=unique.map(obj=>({
+      obj,
+      base:obj.position.clone(),
+      offset:teardownOffset(obj).multiplyScalar(maxDim),
+      target:obj.position.clone()
+    }));
+
+    hint.textContent=`Drag to rotate · scroll to zoom · ${parts.length} controllable components`;
+    if(!parts.length) hint.textContent='Drag to rotate · scroll to zoom · explode data unavailable';
+  },undefined,()=>{
+    hint.textContent='3D model failed to load';
+  });
+
+  function setExplosion(){
+    const t=exploded?Number(explodeSlider.value)/100:0;
+    explodeBtn.classList.toggle('active',exploded);
+    explodeBtn.textContent=exploded?'Assemble':'Explode';
+    if(!parts.length) return;
+    for(const p of parts) p.target.copy(p.base).addScaledVector(p.offset,t);
+  }
+
+  explodeBtn.onclick=()=>{
+    exploded=!exploded;
+    setExplosion();
+  };
+  explodeSlider.oninput=()=>{
+    if(exploded) setExplosion();
+  };
+  resetBtn.onclick=()=>{
+    exploded=false;
+    setExplosion();
+    camera.position.copy(defaultCamera);
+    controls.target.set(0,0,0);
+    controls.autoRotate=true;
+    controls.update();
+  };
+  renderer.domElement.addEventListener('pointerdown',()=>controls.autoRotate=false,{passive:true});
+
+  function resize(){
+    const w=host.clientWidth,h=host.clientHeight;
+    renderer.setSize(w,h,false);
+    camera.aspect=w/h;
+    camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(host);
+  resize();
+
+  (function animate(){
+    requestAnimationFrame(animate);
+    for(const p of parts) p.obj.position.lerp(p.target,.085);
+    controls.update();
+    renderer.render(scene,camera);
+  })();
 }

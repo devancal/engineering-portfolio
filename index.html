@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- v8-three-exploded-v2 -->
+<!-- v8-three-exploded-v3 -->
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Devan Calabrese — Mechanical Engineering student portfolio for Summer 2027 internships.">
 <title>Devan Calabrese | Mechanical Engineering</title>
@@ -45,36 +45,42 @@ const loader=new GLTFLoader();
 function suffixIndex(name){const m=name.match(/_(\d+)\s*$/);return m?Number(m[1]):0}
 function explosionRule(name,c,origin){
   const n=name.toLowerCase();
-  if(n.includes('engine block'))return{dir:new THREE.Vector3(),factor:0};
   const bank=(c.y-origin.y)>=0?1:-1;
   const bankDir=new THREE.Vector3(0,bank*.62,.78).normalize();
   const up=new THREE.Vector3(0,0,1),down=new THREE.Vector3(0,0,-1);
   const axial=new THREE.Vector3((c.x-origin.x)>=0?1:-1,0,0);
-  if(n.includes('piston ring')){const i=suffixIndex(n);return{dir:bankDir,factor:1.18+(i%2)*.16}}
-  if(n.includes('piston cap'))return{dir:bankDir,factor:.98};
-  if(n.includes('connecting pin'))return{dir:bankDir,factor:.80};
-  if(n.includes('connecting rod'))return{dir:bankDir,factor:.58};
-  if(n.includes('cylinder head'))return{dir:bankDir,factor:1.48};
-  if(n.includes('cam cover'))return{dir:bankDir,factor:1.92};
-  if(n.includes('camshaft'))return{dir:bankDir,factor:1.68};
-  if(n.includes('exhaust'))return{dir:bankDir,factor:1.72};
-  if(n.includes('sparkplug'))return{dir:bankDir,factor:1.72};
-  if(n.includes('intake manifold'))return{dir:up,factor:1.58};
-  if(n.includes('air filter'))return{dir:up,factor:2.02};
-  if(n.includes('oil pan'))return{dir:down,factor:1.48};
-  if(n.includes('crankshaft bushing'))return{dir:down,factor:.92};
-  if(n.includes('crankshaft'))return{dir:down,factor:.64};
-  if(n.includes('crank gear'))return{dir:axial,factor:1.18};
-  if(n.includes('cam gear'))return{dir:axial,factor:1.48};
+  if(n.includes('engine block'))return{dir:up,factor:.78};
+  if(n.includes('piston ring')){const i=suffixIndex(n);return{dir:bankDir,factor:1.30+(i%2)*.20}}
+  if(n.includes('piston cap'))return{dir:bankDir,factor:1.06};
+  if(n.includes('connecting pin'))return{dir:bankDir,factor:.84};
+  if(n.includes('connecting rod'))return{dir:bankDir,factor:.60};
+  if(n.includes('cylinder head'))return{dir:bankDir,factor:1.52};
+  if(n.includes('cam cover'))return{dir:bankDir,factor:1.96};
+  if(n.includes('camshaft'))return{dir:bankDir,factor:1.72};
+  if(n.includes('exhaust'))return{dir:bankDir,factor:1.76};
+  if(n.includes('sparkplug'))return{dir:bankDir,factor:1.80};
+  if(n.includes('intake manifold'))return{dir:up,factor:1.62};
+  if(n.includes('air filter'))return{dir:up,factor:2.06};
+  if(n.includes('oil pan'))return{dir:down,factor:1.52};
+  if(n.includes('crankshaft bushing'))return{dir:down,factor:.96};
+  if(n.includes('crankshaft'))return{dir:down,factor:.68};
+  if(n.includes('crank gear'))return{dir:axial,factor:1.22};
+  if(n.includes('cam gear'))return{dir:axial,factor:1.52};
   let dir=c.clone().sub(origin);dir.x*=.55;dir.z*=1.15;if(dir.lengthSq()<1e-8)dir.copy(up);dir.normalize();return{dir,factor:1};
 }
 loader.load('/V8%20engine.glb',gltf=>{
   wrapper=new THREE.Group();wrapper.rotation.x=-Math.PI/2;wrapper.add(gltf.scene);scene.add(wrapper);wrapper.updateMatrixWorld(true);
   let box=new THREE.Box3().setFromObject(wrapper);const center=box.getCenter(new THREE.Vector3());wrapper.position.sub(center);wrapper.updateMatrixWorld(true);box=new THREE.Box3().setFromObject(wrapper);const size=box.getSize(new THREE.Vector3());maxDim=Math.max(size.x,size.y,size.z);
   camera.near=maxDim/500;camera.far=maxDim*30;camera.updateProjectionMatrix();defaultCamera.set(maxDim*1.45,maxDim*.9,maxDim*1.45);camera.position.copy(defaultCamera);controls.minDistance=maxDim*.45;controls.maxDistance=maxDim*6;controls.target.set(0,0,0);controls.update();
-  engineRoot=gltf.scene.getObjectByName('V8 engine')||gltf.scene.children[0]||gltf.scene;engineRoot.updateMatrixWorld(true);const originLocal=engineRoot.worldToLocal(new THREE.Vector3(0,0,0));const candidates=engineRoot.children.length>1?engineRoot.children:gltf.scene.children;
+  engineRoot=gltf.scene.getObjectByName('V8 engine')||gltf.scene.children[0]||gltf.scene;engineRoot.updateMatrixWorld(true);const originLocal=engineRoot.worldToLocal(new THREE.Vector3(0,0,0));const top=engineRoot.children.length>1?engineRoot.children:gltf.scene.children;
+  const candidates=[];
+  for(const part of top){
+    if((part.name||'').toLowerCase().includes('piston assembly')&&part.children.length){
+      for(const child of part.children)candidates.push(child);
+    }else candidates.push(part);
+  }
   parts=candidates.map(part=>{const pbox=new THREE.Box3().setFromObject(part),worldCenter=pbox.getCenter(new THREE.Vector3()),localCenter=engineRoot.worldToLocal(worldCenter.clone()),rule=explosionRule(part.name||'',localCenter,originLocal);return{obj:part,base:part.position.clone(),dir:rule.dir,factor:rule.factor,target:part.position.clone()}});
-  hint.textContent=`Drag to rotate · Scroll to zoom · ${parts.length} component groups`;
+  hint.textContent=`Drag to rotate · Scroll to zoom · ${parts.length} moving components`;
 },undefined,err=>{console.error(err);hint.textContent='3D model failed to load'});
 function setExplosion(){if(!parts.length)return;const slider=Number(explodeSlider.value)/100,distance=exploded?maxDim*(.10+.30*slider):0;for(const p of parts)p.target.copy(p.base).addScaledVector(p.dir,distance*p.factor);explodeBtn.classList.toggle('active',exploded);explodeBtn.textContent=exploded?'Assemble':'Explode'}
 explodeBtn.addEventListener('click',()=>{exploded=!exploded;setExplosion()});explodeSlider.addEventListener('input',()=>{if(exploded)setExplosion()});resetBtn.addEventListener('click',()=>{exploded=false;setExplosion();camera.position.copy(defaultCamera);controls.target.set(0,0,0);controls.autoRotate=true;controls.update()});renderer.domElement.addEventListener('pointerdown',()=>{controls.autoRotate=false},{passive:true});

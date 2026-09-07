@@ -1,166 +1,57 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- v8-three-exploded-v4 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Devan Calabrese — Mechanical Engineering student portfolio for Summer 2027 internships.">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Devan Calabrese — Mechanical Engineering portfolio">
 <title>Devan Calabrese | Mechanical Engineering</title>
 <style>
-:root{--bg:#090b0f;--panel:#11151b;--text:#f3f5f7;--muted:#aab1bd;--line:#2a3039;--scarlet:#ba0c2f}
+:root{--bg:#0a0a0b;--surface:#111214;--surface2:#17181b;--text:#f5f5f2;--muted:#a8a8a3;--line:#292a2e;--scarlet:#ba0c2f;--soft:#151517}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;line-height:1.55}a{color:inherit;text-decoration:none}
-header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:16px 6vw;background:#090b0fee;border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.brand{font-weight:900;font-size:1.2rem}.brand span{color:var(--scarlet)}nav{display:flex;gap:24px;color:var(--muted);font-size:.9rem}nav a:hover{color:#fff}
-.hero,.section{max-width:1180px;margin:auto;padding:86px 6vw}.hero{min-height:78vh;display:grid;align-content:center}.eyebrow{color:#e43a59;text-transform:uppercase;letter-spacing:.14em;font-size:.76rem;font-weight:800}h1{font-size:clamp(3rem,8vw,6.4rem);line-height:.94;letter-spacing:-.055em;max-width:1000px;margin:18px 0 24px}.lede{max-width:760px;color:var(--muted);font-size:1.14rem}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{padding:12px 18px;border:1px solid var(--line);border-radius:9px;font-weight:750}.btn.primary{background:var(--scarlet);border-color:var(--scarlet)}.facts{display:flex;gap:32px;flex-wrap:wrap;margin-top:44px;color:var(--muted)}.facts strong{display:block;color:#fff;font-size:1.35rem}
-.section h2{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;letter-spacing:-.04em;margin:.35em 0}.section-intro{max-width:760px;color:var(--muted);margin-bottom:34px}.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:22px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}.content{padding:24px}.meta{display:flex;justify-content:space-between;gap:10px;color:#e43a59;text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:800}.content h3{font-size:1.45rem;margin:12px 0 8px}.content p{color:var(--muted)}.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.tags span{border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:.78rem}
-.viewer{height:500px;position:relative;background:radial-gradient(circle at 50% 42%,#202833 0,#10151b 48%,#090b0f 100%);overflow:hidden}.viewer canvas{width:100%;height:100%;display:block}.hint{position:absolute;left:14px;bottom:14px;background:#07090ddd;border:1px solid var(--line);border-radius:999px;padding:7px 11px;color:#c6ccd5;font-size:.74rem;pointer-events:none}.viewer-controls{position:absolute;right:14px;top:14px;display:flex;gap:8px;align-items:center;z-index:3}.viewer-control{appearance:none;border:1px solid #444d59;background:#090c11dd;color:#f3f5f7;border-radius:8px;padding:8px 11px;font:700 .76rem/1 Inter,ui-sans-serif,system-ui;cursor:pointer;backdrop-filter:blur(8px)}.viewer-control:hover{border-color:#697584}.viewer-control.active{background:var(--scarlet);border-color:var(--scarlet)}.explode-slider{width:92px;accent-color:var(--scarlet);cursor:pointer}.axis-badge{position:absolute;left:14px;top:14px;background:#090c11d9;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:.68rem;color:#c6ccd5;pointer-events:none}.axis-badge b{color:#fff}
-.placeholder{height:500px;display:grid;place-items:center;text-align:center;padding:30px;background:linear-gradient(135deg,#151a21,#0e1116);color:#6f7885;font-size:.75rem;letter-spacing:.11em}.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.skill,.edu{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}.skill h3,.edu h3{margin-top:0}.skill p,.edu p{color:var(--muted)}.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.contact{text-align:center;border-top:1px solid var(--line)}.contact h2{font-size:clamp(2.5rem,6vw,4.8rem);letter-spacing:-.05em}footer{border-top:1px solid var(--line);padding:26px 6vw;color:var(--muted);font-size:.84rem}
-@media(max-width:820px){nav{display:none}.hero,.section{padding:68px 5vw}.grid,.edu-grid{grid-template-columns:1fr}.skills{grid-template-columns:1fr 1fr}.viewer,.placeholder{height:390px}.explode-slider{display:none}}@media(max-width:520px){.skills{grid-template-columns:1fr}.viewer-controls{right:9px;top:9px}.axis-badge{left:9px;top:9px}}
+.wrap{width:min(1240px,92vw);margin:auto}.nav{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;background:#0a0a0bea;backdrop-filter:blur(16px)}.nav-inner{width:min(1240px,92vw);margin:auto;display:flex;align-items:center;justify-content:space-between}.logo{font-weight:900;letter-spacing:-.03em;font-size:1.1rem}.logo span{color:var(--scarlet)}nav{display:flex;gap:28px;color:var(--muted);font-size:.9rem}nav a:hover{color:#fff}
+.hero{padding:118px 0 96px;border-bottom:1px solid var(--line)}.kicker{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:#d9d9d4;font-weight:800}.hero h1{font-size:clamp(3.5rem,8.5vw,7.4rem);line-height:.9;letter-spacing:-.065em;margin:22px 0;max-width:1080px}.hero h1 em{font-style:normal;color:#b8b8b2}.hero-copy{display:grid;grid-template-columns:1.2fr .8fr;gap:80px;align-items:end}.hero-copy p{max-width:700px;color:var(--muted);font-size:1.08rem}.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.stat{border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:.8rem}.stat strong{display:block;color:#fff;font-size:1.3rem;margin-bottom:3px}
+.section{padding:96px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:40px;margin-bottom:34px}.section-head h2{font-size:clamp(2.4rem,5vw,4.5rem);letter-spacing:-.055em;line-height:.98;margin:.2em 0}.section-head p{max-width:540px;color:var(--muted)}
+.project{border-top:1px solid var(--line);padding:34px 0 72px}.project-top{display:flex;justify-content:space-between;gap:30px;align-items:start;margin-bottom:24px}.project-index{font-size:.75rem;color:#777}.project-title h3{font-size:clamp(1.8rem,4vw,3.4rem);line-height:1;margin:0 0 10px;letter-spacing:-.045em}.project-title p{margin:0;color:var(--muted)}.project-meta{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.tag{border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:.75rem;color:#c9c9c4}
+.project-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.55fr);gap:24px;align-items:stretch}.viewer-shell{min-height:560px;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 48% 42%,#24272d 0,#15171b 44%,#0e0f11 100%);border:1px solid var(--line);position:relative}.viewer-shell canvas{width:100%;height:100%;display:block}.viewer-controls{position:absolute;top:16px;right:16px;z-index:5;display:flex;gap:8px;align-items:center}.viewer-btn{appearance:none;border:1px solid #44474f;background:#0a0b0ddd;color:#fff;border-radius:999px;padding:9px 13px;font-size:.76rem;font-weight:800;cursor:pointer}.viewer-btn.active{background:var(--scarlet);border-color:var(--scarlet)}.explode-slider{width:96px;accent-color:var(--scarlet)}.axis{position:absolute;left:16px;top:16px;border:1px solid var(--line);background:#0a0b0ddd;border-radius:999px;padding:8px 10px;font-size:.69rem;color:#c7c7c2}.hint{position:absolute;left:16px;bottom:16px;border:1px solid var(--line);background:#0a0b0ddd;border-radius:999px;padding:8px 10px;font-size:.72rem;color:#c7c7c2;pointer-events:none}.project-copy{display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line);border-radius:18px;padding:28px;background:linear-gradient(180deg,#121316,#0f1012)}.project-copy p{color:var(--muted);margin-top:0}.bullets{display:grid;gap:12px;margin:24px 0}.bullet{padding-top:12px;border-top:1px solid var(--line);font-size:.9rem;color:#d7d7d1}.link-row{display:flex;gap:10px;flex-wrap:wrap}.link-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:9px 13px;font-size:.78rem;font-weight:800}.link-btn:hover{border-color:#60626a}
+.water-visual{min-height:470px;border:1px solid var(--line);border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#17191d,#0e0f11);padding:34px;text-align:center}.water-visual .gear{font-size:5rem;line-height:1;margin-bottom:14px}.water-visual h4{font-size:1.45rem;margin:0 0 8px}.water-visual p{color:var(--muted);max-width:520px;margin:0 auto}.note{margin-top:18px;font-size:.75rem;color:#777}
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.skill{border-top:1px solid var(--line);padding:20px 0}.skill h3{font-size:1rem;margin:0 0 8px}.skill p{color:var(--muted);font-size:.9rem;margin:0}.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.edu{border:1px solid var(--line);border-radius:16px;padding:26px;background:var(--surface)}.edu h3{margin-top:0}.edu p{color:var(--muted)}.contact{padding:110px 0;border-top:1px solid var(--line);text-align:center}.contact h2{font-size:clamp(3rem,7vw,6rem);line-height:.95;letter-spacing:-.06em;margin:12px auto 24px;max-width:900px}.contact p{color:var(--muted)}.cta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:28px}.cta a{border:1px solid var(--line);border-radius:999px;padding:12px 17px;font-weight:800}.cta .primary{background:var(--scarlet);border-color:var(--scarlet)}footer{padding:24px 4vw;border-top:1px solid var(--line);color:#777;font-size:.8rem}
+@media(max-width:900px){nav{display:none}.hero-copy,.project-grid,.edu-grid{grid-template-columns:1fr}.stat-row{margin-top:18px}.viewer-shell{min-height:460px}.project-meta{justify-content:flex-start}.project-top{display:grid}.skills-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.hero{padding:88px 0 70px}.section{padding:72px 0}.stat-row,.skills-grid{grid-template-columns:1fr}.viewer-shell{min-height:390px}.explode-slider{display:none}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
 </head>
 <body>
-<header><a class="brand" href="#home">DC<span>.</span></a><nav><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#education">Education</a><a href="#contact">Contact</a></nav></header>
+<div class="nav"><div class="nav-inner"><a class="logo" href="#home">DEVAN CALABRESE<span>.</span></a><nav><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#education">Education</a><a href="#contact">Contact</a></nav></div></div>
 <main>
-<section id="home" class="hero"><p class="eyebrow">SUMMER 2027 ENGINEERING INTERNSHIP PORTFOLIO</p><h1>Mechanical design, CAD, and hands-on engineering.</h1><p class="lede">I’m Devan Calabrese, a Mechanical Engineering student at The Ohio State University. I’m building experience through mechanical system design, parametric CAD, Formula Buckeye, and engineering-focused programming.</p><div class="actions"><a class="btn primary" href="#projects">View Projects</a><a class="btn" href="#contact">Resume & Contact</a></div><div class="facts"><div><strong>3.86</strong>OSU GPA</div><div><strong>May 2029</strong>Expected Graduation</div><div><strong>CAD</strong>Onshape + SolidWorks</div></div></section>
-<section id="projects" class="section"><p class="eyebrow">SELECTED WORK</p><h2>Projects built around mechanisms, motion, and design.</h2><p class="section-intro">A concise look at the mechanical systems I’ve designed and modeled.</p><div class="grid">
-<article class="card"><div class="viewer" id="v8-viewer"><div class="axis-badge"><b>Z</b> = UP</div><div class="viewer-controls"><button class="viewer-control" id="explode-btn" type="button">Explode</button><input class="explode-slider" id="explode-slider" type="range" min="0" max="100" value="58" aria-label="Explosion distance"><button class="viewer-control" id="reset-btn" type="button">Reset</button></div><span class="hint" id="viewer-hint">Loading detailed 3D model…</span></div><div class="content"><div class="meta"><span>Personal Project</span><span>Jan–Mar 2026</span></div><h3>V8 Engine Internal Combustion Design</h3><p>Designed and assembled a complex mechanical system in SolidWorks and Onshape using parametric modeling; validated component motion and refined geometry to eliminate interference.</p><div class="tags"><span>Onshape</span><span>SolidWorks</span><span>Parametric CAD</span><span>Motion</span></div></div></article>
-<article class="card"><div class="placeholder">WATER PUMP PROJECT IMAGE<br>PLACEHOLDER</div><div class="content"><div class="meta"><span>Course Project</span><span>Fall 2025</span></div><h3>Water Pump Design & Fabrication</h3><p>Designed a CAD concept to transport water vertically and horizontally using an animal-powered bucket-and-gear conveyor with modeled gears, shafts, buckets, and support structures.</p><div class="tags"><span>CAD</span><span>Gear Train</span><span>Mechanical Systems</span></div></div></article>
+<section id="home" class="hero"><div class="wrap"><div class="kicker">Mechanical Engineering · Summer 2027</div><h1>Designing systems that <em>move, fit, and work.</em></h1><div class="hero-copy"><p>I’m Devan Calabrese, a Mechanical Engineering student at The Ohio State University focused on mechanical design, CAD, systems, engines, and hands-on engineering.</p><div class="stat-row"><div class="stat"><strong>3.86</strong>OSU GPA</div><div class="stat"><strong>2029</strong>Expected Grad</div><div class="stat"><strong>CAD</strong>Onshape + SolidWorks</div></div></div></div></section>
+
+<section id="projects" class="section"><div class="wrap"><div class="section-head"><div><div class="kicker">Selected Work</div><h2>Projects</h2></div><p>Mechanical systems built to show how I think through motion, packaging, assemblies, and design decisions.</p></div>
+
+<article class="project"><div class="project-top"><div class="project-index">01</div><div class="project-title"><h3>V8 Engine Internal Combustion Design</h3><p>Personal Project · Jan–Mar 2026</p></div><div class="project-meta"><span class="tag">Onshape</span><span class="tag">SolidWorks</span><span class="tag">Parametric CAD</span><span class="tag">Motion</span></div></div>
+<div class="project-grid"><div class="viewer-shell" id="v8-viewer"><div class="axis"><b>Z</b> = UP</div><div class="viewer-controls"><button class="viewer-btn" id="explode-btn" type="button">Explode</button><input class="explode-slider" id="explode-slider" type="range" min="0" max="100" value="55" aria-label="Explosion distance"><button class="viewer-btn" id="reset-btn" type="button">Reset</button></div><span class="hint" id="viewer-hint">Loading 3D model…</span></div><div class="project-copy"><div><p>Designed and assembled a complex mechanical system in both SolidWorks and Onshape using parametric modeling; validated component motion and refined geometry to eliminate interference.</p><div class="bullets"><div class="bullet">Multi-component engine assembly and packaging</div><div class="bullet">Motion-focused piston and valvetrain exploration</div><div class="bullet">Parametric CAD workflow across Onshape and SolidWorks</div></div></div></div></div></article>
+
+<article class="project"><div class="project-top"><div class="project-index">02</div><div class="project-title"><h3>Water Pump Design & Fabrication</h3><p>Course Project · Fall 2025</p></div><div class="project-meta"><span class="tag">CAD</span><span class="tag">Gear Train</span><span class="tag">Mechanical Systems</span></div></div>
+<div class="project-grid"><div class="water-visual"><div><div class="gear">⚙</div><h4>Animal-powered bucket-and-gear water transport system</h4><p>Designed to move water vertically and horizontally using a geared conveyor with buckets, shafts, support structure, and an ox-driven input concept.</p><div class="note">Interactive assembly + engineering drawing are wired for the project assets.</div></div></div><div class="project-copy"><div><p>Modeled the system architecture and major mechanical components, including gears, shafts, buckets, and support structures.</p><div class="bullets"><div class="bullet">Power transmission through a gear-driven mechanism</div><div class="bullet">Vertical and horizontal water movement concept</div><div class="bullet">Assembly-level CAD plus a technical drawing sheet</div></div></div><div class="link-row"><a class="link-btn" href="/Fully%20Complete%20Project%20Assembly.glb" target="_blank">Open 3D Assembly</a><a class="link-btn" href="/Drawing%201.pdf" target="_blank">Engineering Drawing</a></div></div></div></article>
 </div></section>
-<section id="skills" class="section"><p class="eyebrow">SKILLS</p><h2>Tools I use to model, analyze, and build.</h2><div class="skills"><div class="skill"><h3>CAD & Design</h3><p>Onshape, SolidWorks, parametric modeling, assemblies, mechanical systems.</p></div><div class="skill"><h3>Programming</h3><p>Python and JavaScript for coursework, problem-solving, and engineering applications.</p></div><div class="skill"><h3>Engineering</h3><p>Mechanical systems design, quantitative reasoning, data interpretation, process optimization.</p></div><div class="skill"><h3>Collaboration</h3><p>Project management, teamwork, coaching, mentoring, and technical communication.</p></div></div></section>
-<section id="education" class="section"><p class="eyebrow">EDUCATION + INVOLVEMENT</p><h2>Mechanical Engineering at Ohio State.</h2><div class="edu-grid"><div class="edu"><h3>The Ohio State University</h3><p>B.S. Mechanical Engineering · Expected May 2029</p><p>GPA 3.86 · Dean’s List Spring 2026</p><p>Formula Buckeye · ASME</p></div><div class="edu"><h3>University of Cincinnati</h3><p>Mechanical Engineering · Fall 2025</p><p>GPA 3.92 · Dean’s List</p><p>Cincinnatus Century Scholar</p></div></div></section>
-<section id="contact" class="section contact"><p class="eyebrow">LET’S CONNECT</p><h2>Looking for a Summer 2027 engineering internship.</h2><p class="lede" style="margin:0 auto 24px">Interested in mechanical design, engines, systems, reliability, and hands-on engineering.</p><div class="actions" style="justify-content:center"><a class="btn primary" href="mailto:Calabrese.90@osu.edu">Calabrese.90@osu.edu</a><a class="btn" href="https://www.linkedin.com/in/devancalabrese" target="_blank" rel="noopener">LinkedIn</a></div></section>
+
+<section id="skills" class="section"><div class="wrap"><div class="section-head"><div><div class="kicker">Capabilities</div><h2>Skills</h2></div></div><div class="skills-grid"><div class="skill"><h3>CAD & Design</h3><p>Onshape, SolidWorks, parametric modeling, assemblies.</p></div><div class="skill"><h3>Programming</h3><p>Python and JavaScript for engineering and coursework.</p></div><div class="skill"><h3>Engineering</h3><p>Mechanical systems, quantitative reasoning, data interpretation.</p></div><div class="skill"><h3>Collaboration</h3><p>Project management, teamwork, coaching, mentoring.</p></div></div></div></section>
+<section id="education" class="section"><div class="wrap"><div class="section-head"><div><div class="kicker">Background</div><h2>Education</h2></div></div><div class="edu-grid"><div class="edu"><h3>The Ohio State University</h3><p>B.S. Mechanical Engineering · Expected May 2029</p><p>3.86 GPA · Dean’s List Spring 2026 · Formula Buckeye · ASME</p></div><div class="edu"><h3>University of Cincinnati</h3><p>Mechanical Engineering · Fall 2025</p><p>3.92 GPA · Dean’s List · Cincinnatus Century Scholar</p></div></div></div></section>
+<section id="contact" class="contact"><div class="wrap"><div class="kicker">Let’s Connect</div><h2>Looking for a Summer 2027 engineering internship.</h2><p>Mechanical design · engines · systems · reliability · hands-on engineering</p><div class="cta"><a class="primary" href="mailto:Calabrese.90@osu.edu">Calabrese.90@osu.edu</a><a href="https://www.linkedin.com/in/devancalabrese" target="_blank" rel="noopener">LinkedIn</a></div></div></section>
 </main><footer>Devan Calabrese · Mechanical Engineering · The Ohio State University</footer>
+
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
-const host=document.getElementById('v8-viewer');
-const hint=document.getElementById('viewer-hint');
-const explodeBtn=document.getElementById('explode-btn');
-const explodeSlider=document.getElementById('explode-slider');
-const resetBtn=document.getElementById('reset-btn');
-
+const host=document.getElementById('v8-viewer'),hint=document.getElementById('viewer-hint'),explodeBtn=document.getElementById('explode-btn'),explodeSlider=document.getElementById('explode-slider'),resetBtn=document.getElementById('reset-btn');
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(34,1,.001,100);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.15;
-host.prepend(renderer.domElement);
-
-scene.add(new THREE.HemisphereLight(0xffffff,0x25303c,2.25));
-const key=new THREE.DirectionalLight(0xffffff,3.2);key.position.set(3,5,4);scene.add(key);
-const fill=new THREE.DirectionalLight(0xd9e7ff,1.7);fill.position.set(-4,2,-3);scene.add(fill);
-const rim=new THREE.DirectionalLight(0xffffff,1.4);rim.position.set(0,-2,5);scene.add(rim);
-
-const controls=new OrbitControls(camera,renderer.domElement);
-controls.enableDamping=true;controls.dampingFactor=.07;controls.autoRotate=true;controls.autoRotateSpeed=.85;controls.target.set(0,0,0);
-
-let parts=[],exploded=false,maxDim=1,defaultCamera=new THREE.Vector3();
-
-function suffixIndex(name){const m=name.match(/_(\d+)\s*$/);return m?Number(m[1]):0}
-function explosionRule(name,c,origin){
-  const n=name.toLowerCase();
-  const bank=(c.y-origin.y)>=0?1:-1;
-  const bankDir=new THREE.Vector3(0,bank*.70,.714).normalize();
-  const up=new THREE.Vector3(0,0,1),down=new THREE.Vector3(0,0,-1);
-  const axial=new THREE.Vector3((c.x-origin.x)>=0?1:-1,0,0);
-
-  if(n.includes('engine block')) return {dir:up,factor:1.45};
-  if(n.includes('piston ring')){
-    const i=suffixIndex(n);
-    return {dir:bankDir,factor:1.48+(i%2)*.24};
-  }
-  if(n.includes('piston cap')) return {dir:bankDir,factor:1.20};
-  if(n.includes('connecting pin')) return {dir:bankDir,factor:.98};
-  if(n.includes('connecting rod')) return {dir:bankDir,factor:.74};
-  if(n.includes('cylinder head')) return {dir:bankDir,factor:1.85};
-  if(n.includes('cam cover')) return {dir:bankDir,factor:2.30};
-  if(n.includes('camshaft')) return {dir:bankDir,factor:2.03};
-  if(n.includes('exhaust')) return {dir:bankDir,factor:2.08};
-  if(n.includes('sparkplug')) return {dir:bankDir,factor:2.18};
-  if(n.includes('intake manifold')) return {dir:up,factor:2.05};
-  if(n.includes('air filter')) return {dir:up,factor:2.52};
-  if(n.includes('oil pan')) return {dir:down,factor:1.75};
-  if(n.includes('crankshaft bushing')) return {dir:down,factor:1.10};
-  if(n.includes('crankshaft')) return {dir:down,factor:.82};
-  if(n.includes('crank gear')) return {dir:axial,factor:1.42};
-  if(n.includes('cam gear')) return {dir:axial,factor:1.80};
-
-  let dir=c.clone().sub(origin);
-  dir.x*=.55;dir.z*=1.10;
-  if(dir.lengthSq()<1e-8)dir.copy(up);
-  dir.normalize();
-  return {dir,factor:1.08};
-}
-
-new GLTFLoader().load('/V8%20engine.glb?v=4',gltf=>{
-  const wrapper=new THREE.Group();
-  wrapper.rotation.x=-Math.PI/2;
-  wrapper.add(gltf.scene);scene.add(wrapper);wrapper.updateMatrixWorld(true);
-
-  let box=new THREE.Box3().setFromObject(wrapper);
-  const center=box.getCenter(new THREE.Vector3());
-  wrapper.position.sub(center);
-  wrapper.updateMatrixWorld(true);
-  box=new THREE.Box3().setFromObject(wrapper);
-  const size=box.getSize(new THREE.Vector3());
-  maxDim=Math.max(size.x,size.y,size.z);
-
-  camera.near=maxDim/500;camera.far=maxDim*30;camera.updateProjectionMatrix();
-  defaultCamera.set(maxDim*1.45,maxDim*.9,maxDim*1.45);
-  camera.position.copy(defaultCamera);
-  controls.minDistance=maxDim*.45;controls.maxDistance=maxDim*6;controls.target.set(0,0,0);controls.update();
-
-  const engineRoot=gltf.scene.getObjectByName('V8 engine')||gltf.scene.children[0]||gltf.scene;
-  engineRoot.updateMatrixWorld(true);
-  const originLocal=engineRoot.worldToLocal(new THREE.Vector3(0,0,0));
-
-  const candidates=[];
-  for(const part of engineRoot.children){
-    const nm=(part.name||'').toLowerCase();
-    if(nm.includes('piston assembly') && part.children.length){
-      for(const child of part.children)candidates.push(child);
-    }else{
-      candidates.push(part);
-    }
-  }
-
-  parts=candidates.map(part=>{
-    const pbox=new THREE.Box3().setFromObject(part);
-    const worldCenter=pbox.getCenter(new THREE.Vector3());
-    const localCenter=engineRoot.worldToLocal(worldCenter.clone());
-    const rule=explosionRule(part.name||'',localCenter,originLocal);
-
-    const rootWorldQuat=new THREE.Quaternion();engineRoot.getWorldQuaternion(rootWorldQuat);
-    const dirWorld=rule.dir.clone().applyQuaternion(rootWorldQuat);
-    const parentWorldQuat=new THREE.Quaternion();part.parent.getWorldQuaternion(parentWorldQuat);
-    const dirParent=dirWorld.applyQuaternion(parentWorldQuat.invert()).normalize();
-
-    return {obj:part,base:part.position.clone(),dir:dirParent,factor:rule.factor,target:part.position.clone()};
-  });
-
-  hint.textContent=`Detailed explode · drag to rotate · ${parts.length} moving components`;
-},undefined,err=>{console.error(err);hint.textContent='3D model failed to load'});
-
-function setExplosion(){
-  if(!parts.length)return;
-  const slider=Number(explodeSlider.value)/100;
-  const distance=exploded?maxDim*(.12+.34*slider):0;
-  for(const p of parts)p.target.copy(p.base).addScaledVector(p.dir,distance*p.factor);
-  explodeBtn.classList.toggle('active',exploded);
-  explodeBtn.textContent=exploded?'Assemble':'Explode';
-}
-explodeBtn.addEventListener('click',()=>{exploded=!exploded;setExplosion()});
-explodeSlider.addEventListener('input',()=>{if(exploded)setExplosion()});
-resetBtn.addEventListener('click',()=>{exploded=false;setExplosion();camera.position.copy(defaultCamera);controls.target.set(0,0,0);controls.autoRotate=true;controls.update()});
-renderer.domElement.addEventListener('pointerdown',()=>{controls.autoRotate=false},{passive:true});
-
-function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
-new ResizeObserver(resize).observe(host);resize();
-function animate(){requestAnimationFrame(animate);for(const p of parts)p.obj.position.lerp(p.target,.11);controls.update();renderer.render(scene,camera)}
-animate();
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.prepend(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xffffff,0x25303c,2.25));const key=new THREE.DirectionalLight(0xffffff,3.2);key.position.set(3,5,4);scene.add(key);const fill=new THREE.DirectionalLight(0xd9e7ff,1.7);fill.position.set(-4,2,-3);scene.add(fill);const rim=new THREE.DirectionalLight(0xffffff,1.4);rim.position.set(0,-2,5);scene.add(rim);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.07;controls.autoRotate=true;controls.autoRotateSpeed=.85;controls.target.set(0,0,0);
+let wrapper=null,engineRoot=null,parts=[],exploded=false,maxDim=1,defaultCamera=new THREE.Vector3();
+new GLTFLoader().load('/V8%20engine.glb',gltf=>{wrapper=new THREE.Group();wrapper.rotation.x=-Math.PI/2;wrapper.add(gltf.scene);scene.add(wrapper);wrapper.updateMatrixWorld(true);let box=new THREE.Box3().setFromObject(wrapper);const center=box.getCenter(new THREE.Vector3());wrapper.position.sub(center);wrapper.updateMatrixWorld(true);box=new THREE.Box3().setFromObject(wrapper);const size=box.getSize(new THREE.Vector3());maxDim=Math.max(size.x,size.y,size.z);camera.near=maxDim/500;camera.far=maxDim*30;camera.updateProjectionMatrix();defaultCamera.set(maxDim*1.45,maxDim*.9,maxDim*1.45);camera.position.copy(defaultCamera);controls.minDistance=maxDim*.45;controls.maxDistance=maxDim*6;controls.target.set(0,0,0);controls.update();engineRoot=gltf.scene.getObjectByName('V8 engine')||gltf.scene.children[0]||gltf.scene;engineRoot.updateMatrixWorld(true);const originLocal=engineRoot.worldToLocal(new THREE.Vector3(0,0,0));const candidates=engineRoot.children.length>1?engineRoot.children:gltf.scene.children;parts=candidates.map(part=>{const pbox=new THREE.Box3().setFromObject(part),worldCenter=pbox.getCenter(new THREE.Vector3()),localCenter=engineRoot.worldToLocal(worldCenter.clone());let dir=localCenter.sub(originLocal).normalize();if(!Number.isFinite(dir.x)||dir.lengthSq()<1e-8)dir=new THREE.Vector3(0,1,0);return{obj:part,base:part.position.clone(),dir,target:part.position.clone()}});hint.textContent=`Drag to rotate · Scroll to zoom · ${parts.length} component groups`},undefined,err=>{console.error(err);hint.textContent='3D model failed to load'});
+function setExplosion(){if(!parts.length)return;const slider=Number(explodeSlider.value)/100,distance=exploded?maxDim*(.12+.34*slider):0;for(const p of parts)p.target.copy(p.base).addScaledVector(p.dir,distance);explodeBtn.classList.toggle('active',exploded);explodeBtn.textContent=exploded?'Assemble':'Explode'}
+explodeBtn.addEventListener('click',()=>{exploded=!exploded;setExplosion()});explodeSlider.addEventListener('input',()=>{if(exploded)setExplosion()});resetBtn.addEventListener('click',()=>{exploded=false;setExplosion();camera.position.copy(defaultCamera);controls.target.set(0,0,0);controls.autoRotate=true;controls.update()});renderer.domElement.addEventListener('pointerdown',()=>{controls.autoRotate=false},{passive:true});
+function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}new ResizeObserver(resize).observe(host);resize();function animate(){requestAnimationFrame(animate);for(const p of parts)p.obj.position.lerp(p.target,.085);controls.update();renderer.render(scene,camera)}animate();
 </script>
 </body></html>

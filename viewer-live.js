@@ -32,13 +32,38 @@ if(host){
   (function animate(){requestAnimationFrame(animate);for(const p of parts)p.obj.position.lerp(p.target,.085);V.controls.update();V.renderer.render(V.scene,V.camera);})();
 }
 
-// New SolidWorks V8: separate viewer using the exported Motion Study.
+// SolidWorks V8: use model-viewer, which already works for the site's pump GLB.
 const motionHost=document.getElementById('solidworks-v8-viewer');
 if(motionHost){
   const hint=document.getElementById('motion-viewer-hint'),playBtn=document.getElementById('motion-play-btn'),resetBtn=document.getElementById('motion-reset-btn');
-  const V=makeBaseViewer(motionHost),clock=new THREE.Clock();let mixer=null,action=null,running=false;
-  new GLTFLoader().load('/Assem1Motion.glb',gltf=>{const model=new THREE.Group();model.rotation.x=-Math.PI/2;model.add(gltf.scene);V.scene.add(model);V.frame(model);if(gltf.animations.length){mixer=new THREE.AnimationMixer(gltf.scene);action=mixer.clipAction(gltf.animations[0]);action.setLoop(THREE.LoopRepeat,Infinity);action.play();action.paused=true;hint.textContent='SolidWorks Motion Study · ready to run';}else{playBtn.disabled=true;hint.textContent='Interactive SolidWorks CAD · no embedded motion found';}},undefined,()=>{hint.textContent='SolidWorks model failed to load';playBtn.disabled=true;});
-  playBtn.onclick=()=>{if(!action)return;running=!running;action.paused=!running;playBtn.textContent=running?'Pause':'Play';playBtn.classList.toggle('active',running);if(running)V.controls.autoRotate=false;};
-  resetBtn.onclick=()=>{if(action){running=false;action.reset().play();action.paused=true;playBtn.textContent='Play';playBtn.classList.remove('active');mixer.update(0);}V.camera.position.copy(V.defaultCamera);V.controls.target.set(0,0,0);V.controls.autoRotate=true;V.controls.update();};
-  (function animate(){requestAnimationFrame(animate);const dt=clock.getDelta();if(mixer&&running)mixer.update(dt);V.controls.update();V.renderer.render(V.scene,V.camera);})();
+  let running=false;
+  const mv=document.createElement('model-viewer');
+  mv.src='/Assem1Motion.glb';
+  mv.setAttribute('camera-controls','');
+  mv.setAttribute('shadow-intensity','1');
+  mv.setAttribute('exposure','1.05');
+  mv.setAttribute('interaction-prompt','auto');
+  mv.setAttribute('orientation','0deg 0deg 0deg');
+  mv.setAttribute('camera-orbit','auto auto 120%');
+  mv.setAttribute('alt','Interactive SolidWorks V8 Motion Study');
+  mv.style.position='absolute';mv.style.inset='0';mv.style.width='100%';mv.style.height='100%';mv.style.background='#e4e8de';
+  motionHost.prepend(mv);
+
+  mv.addEventListener('load',()=>{
+    const animations=mv.availableAnimations||[];
+    if(animations.length){mv.animationName=animations[0];hint.textContent='SolidWorks Motion Study · ready to run';playBtn.disabled=false;}
+    else{hint.textContent='Interactive SolidWorks CAD · no embedded motion found';playBtn.disabled=true;}
+  });
+  mv.addEventListener('error',()=>{hint.textContent='SolidWorks model failed to load';playBtn.disabled=true;});
+
+  playBtn.onclick=()=>{
+    if(playBtn.disabled)return;
+    running=!running;
+    if(running){mv.play();playBtn.textContent='Pause';playBtn.classList.add('active');}
+    else{mv.pause();playBtn.textContent='Play';playBtn.classList.remove('active');}
+  };
+  resetBtn.onclick=()=>{
+    running=false;mv.pause();mv.currentTime=0;playBtn.textContent='Play';playBtn.classList.remove('active');
+    mv.cameraOrbit='auto auto 120%';mv.jumpCameraToGoal?.();
+  };
 }

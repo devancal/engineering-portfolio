@@ -32,13 +32,13 @@ if(host){
   (function animate(){requestAnimationFrame(animate);for(const p of parts)p.obj.position.lerp(p.target,.085);V.controls.update();V.renderer.render(V.scene,V.camera);})();
 }
 
-// SolidWorks V8: use model-viewer, which already works for the site's pump GLB.
+// SolidWorks V8: cleaned web animation GLB, separate from the Onshape project.
 const motionHost=document.getElementById('solidworks-v8-viewer');
 if(motionHost){
   const hint=document.getElementById('motion-viewer-hint'),playBtn=document.getElementById('motion-play-btn'),resetBtn=document.getElementById('motion-reset-btn');
   let running=false;
   const mv=document.createElement('model-viewer');
-  mv.src='/Assem1Motion.glb';
+  mv.src='/Assem1MotionWeb.glb';
   mv.setAttribute('camera-controls','');
   mv.setAttribute('shadow-intensity','1');
   mv.setAttribute('exposure','1.05');

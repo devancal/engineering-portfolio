@@ -32,38 +32,58 @@ if(host){
   (function animate(){requestAnimationFrame(animate);for(const p of parts)p.obj.position.lerp(p.target,.085);V.controls.update();V.renderer.render(V.scene,V.camera);})();
 }
 
-// SolidWorks V8: repaired web-safe animation GLB, separate from the Onshape project.
+// SolidWorks V8: repaired Motion Study with independent explode controls.
 const motionHost=document.getElementById('solidworks-v8-viewer');
 if(motionHost){
-  const hint=document.getElementById('motion-viewer-hint'),playBtn=document.getElementById('motion-play-btn'),resetBtn=document.getElementById('motion-reset-btn');
-  let running=false;
-  const mv=document.createElement('model-viewer');
-  mv.src='/Assem1MotionWebFixed.glb';
-  mv.setAttribute('camera-controls','');
-  mv.setAttribute('shadow-intensity','1');
-  mv.setAttribute('exposure','1.05');
-  mv.setAttribute('interaction-prompt','auto');
-  mv.setAttribute('orientation','0deg 0deg 0deg');
-  mv.setAttribute('camera-orbit','auto auto 120%');
-  mv.setAttribute('alt','Interactive SolidWorks V8 Motion Study');
-  mv.style.position='absolute';mv.style.inset='0';mv.style.width='100%';mv.style.height='100%';mv.style.background='#e4e8de';
-  motionHost.prepend(mv);
+  const hint=document.getElementById('motion-viewer-hint');
+  const controlsBar=motionHost.querySelector('.live-controls');
+  const oldPlay=document.getElementById('motion-play-btn');
+  const oldReset=document.getElementById('motion-reset-btn');
+  if(oldPlay)oldPlay.remove();if(oldReset)oldReset.remove();
+  const playBtn=document.createElement('button');playBtn.type='button';playBtn.textContent='Play';
+  const explodeBtn=document.createElement('button');explodeBtn.type='button';explodeBtn.textContent='Explode';
+  const explodeSlider=document.createElement('input');explodeSlider.type='range';explodeSlider.min='0';explodeSlider.max='100';explodeSlider.value='55';explodeSlider.setAttribute('aria-label','SolidWorks explosion distance');
+  const resetBtn=document.createElement('button');resetBtn.type='button';resetBtn.textContent='Reset';
+  controlsBar?.append(playBtn,explodeBtn,explodeSlider,resetBtn);
 
-  mv.addEventListener('load',()=>{
-    const animations=mv.availableAnimations||[];
-    if(animations.length){mv.animationName=animations[0];hint.textContent='SolidWorks Motion Study · ready to run';playBtn.disabled=false;}
-    else{hint.textContent='Interactive SolidWorks CAD · no embedded motion found';playBtn.disabled=true;}
-  });
-  mv.addEventListener('error',()=>{hint.textContent='SolidWorks model failed to load';playBtn.disabled=true;});
+  const V=makeBaseViewer(motionHost);
+  const clock=new THREE.Clock();
+  let mixer=null,action=null,running=false,exploded=false,maxDim=1,parts=[];
 
-  playBtn.onclick=()=>{
-    if(playBtn.disabled)return;
-    running=!running;
-    if(running){mv.play();playBtn.textContent='Pause';playBtn.classList.add('active');}
-    else{mv.pause();playBtn.textContent='Play';playBtn.classList.remove('active');}
-  };
-  resetBtn.onclick=()=>{
-    running=false;mv.pause();mv.currentTime=0;playBtn.textContent='Play';playBtn.classList.remove('active');
-    mv.cameraOrbit='auto auto 120%';mv.jumpCameraToGoal?.();
-  };
+  function makeExplodeParts(root){
+    root.updateMatrixWorld(true);
+    const overall=new THREE.Box3().setFromObject(root);const center=overall.getCenter(new THREE.Vector3());
+    const assembly=root.getObjectByName('Assem1')||root.children[0]||root;
+    const candidates=[...assembly.children];
+    return candidates.map((obj,i)=>{
+      obj.updateMatrixWorld(true);
+      const box=new THREE.Box3().setFromObject(obj);const c=box.getCenter(new THREE.Vector3());
+      const dir=c.clone().sub(center);
+      if(dir.lengthSq()<1e-8){const a=(i/candidates.length)*Math.PI*2;dir.set(Math.cos(a),Math.sin(a),((i%3)-1)*.25);}
+      dir.normalize();
+      const wrapper=new THREE.Group();wrapper.name=`explode-wrapper-${i}`;
+      assembly.add(wrapper);wrapper.add(obj);
+      return {wrapper,target:new THREE.Vector3(),offset:dir.multiplyScalar(maxDim*.72)};
+    });
+  }
+
+  function setExplosion(){
+    const t=exploded?Number(explodeSlider.value)/100:0;
+    explodeBtn.classList.toggle('active',exploded);explodeBtn.textContent=exploded?'Assemble':'Explode';
+    for(const p of parts)p.target.copy(p.offset).multiplyScalar(t);
+  }
+
+  new GLTFLoader().load('/Assem1MotionWebFixed.glb',gltf=>{
+    V.scene.add(gltf.scene);maxDim=V.frame(gltf.scene);
+    parts=makeExplodeParts(gltf.scene);
+    if(gltf.animations.length){mixer=new THREE.AnimationMixer(gltf.scene);action=mixer.clipAction(gltf.animations[0]);action.setLoop(THREE.LoopRepeat,Infinity);hint.textContent=`SolidWorks Motion Study · ${parts.length} expandable component groups`;}
+    else{playBtn.disabled=true;hint.textContent='Interactive SolidWorks CAD · no embedded motion found';}
+  },undefined,()=>{hint.textContent='SolidWorks model failed to load';playBtn.disabled=true;explodeBtn.disabled=true;});
+
+  playBtn.onclick=()=>{if(!action)return;running=!running;if(running){action.paused=false;action.play();playBtn.textContent='Pause';playBtn.classList.add('active');}else{action.paused=true;playBtn.textContent='Play';playBtn.classList.remove('active');}};
+  explodeBtn.onclick=()=>{exploded=!exploded;setExplosion();};
+  explodeSlider.oninput=()=>{if(exploded)setExplosion();};
+  resetBtn.onclick=()=>{running=false;exploded=false;if(action){action.stop();action.reset();}playBtn.textContent='Play';playBtn.classList.remove('active');setExplosion();V.camera.position.copy(V.defaultCamera);V.controls.target.set(0,0,0);V.controls.autoRotate=true;V.controls.update();};
+
+  (function animate(){requestAnimationFrame(animate);const dt=clock.getDelta();if(mixer&&running)mixer.update(dt);for(const p of parts)p.wrapper.position.lerp(p.target,.085);V.controls.update();V.renderer.render(V.scene,V.camera);})();
 }

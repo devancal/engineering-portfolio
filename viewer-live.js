@@ -67,13 +67,42 @@ if(motionHost){
     });
   }
 
+  function ghostOuterShell(root){
+    const targets=[
+      {match:'engine block',opacity:.30},
+      {match:'cylinder head',opacity:.34},
+      {match:'cam cover',opacity:.26}
+    ];
+    root.traverse(obj=>{
+      const n=(obj.name||'').toLowerCase().replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();
+      const t=targets.find(x=>n.includes(x.match));
+      if(!t)return;
+      obj.traverse(child=>{
+        if(!child.isMesh||!child.material)return;
+        const mats=Array.isArray(child.material)?child.material:[child.material];
+        const cloned=mats.map(m=>{
+          const c=m.clone();
+          c.transparent=true;c.opacity=t.opacity;c.depthWrite=false;c.side=THREE.DoubleSide;
+          if('roughness' in c)c.roughness=.78;
+          if('metalness' in c)c.metalness=0;
+          if(c.color)c.color.lerp(new THREE.Color(0xeeeeea),.45);
+          c.needsUpdate=true;
+          return c;
+        });
+        child.material=Array.isArray(child.material)?cloned:cloned[0];
+        child.renderOrder=2;
+      });
+    });
+  }
+
   function setExplosion(){
     const t=exploded?Number(explodeSlider.value)/100:0;
     explodeBtn.classList.toggle('active',exploded);explodeBtn.textContent=exploded?'Assemble':'Explode';
     for(const p of parts)p.target.copy(p.offset).multiplyScalar(t);
   }
 
-  new GLTFLoader().load('/Assem1MotionWebFixed-Colored.glb',gltf=>{
+  new GLTFLoader().load('/Assem1MotionWebFixed-Final.glb',gltf=>{
+    ghostOuterShell(gltf.scene);
     V.scene.add(gltf.scene);maxDim=V.frame(gltf.scene);
     parts=makeExplodeParts(gltf.scene);
     if(gltf.animations.length){mixer=new THREE.AnimationMixer(gltf.scene);action=mixer.clipAction(gltf.animations[0]);action.setLoop(THREE.LoopRepeat,Infinity);hint.textContent=`SolidWorks Motion Study · ${parts.length} expandable component groups`;}

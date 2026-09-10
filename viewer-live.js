@@ -73,7 +73,7 @@ if(motionHost){
     for(const p of parts)p.target.copy(p.offset).multiplyScalar(t);
   }
 
-  new GLTFLoader().load('/Assem1MotionWebFixed.glb',gltf=>{
+  new GLTFLoader().load('/Assem1MotionWebFixed-Colored.glb',gltf=>{
     V.scene.add(gltf.scene);maxDim=V.frame(gltf.scene);
     parts=makeExplodeParts(gltf.scene);
     if(gltf.animations.length){mixer=new THREE.AnimationMixer(gltf.scene);action=mixer.clipAction(gltf.animations[0]);action.setLoop(THREE.LoopRepeat,Infinity);hint.textContent=`SolidWorks Motion Study · ${parts.length} expandable component groups`;}

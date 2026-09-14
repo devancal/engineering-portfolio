@@ -2,11 +2,25 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
+function whenNearViewport(element,init){
+  if(!element)return;
+  let started=false;
+  const start=()=>{if(started)return;started=true;init();};
+  if(!('IntersectionObserver' in window)){start();return;}
+  const observer=new IntersectionObserver(entries=>{
+    if(entries.some(entry=>entry.isIntersecting)){
+      observer.disconnect();
+      start();
+    }
+  },{rootMargin:'250px 0px',threshold:0.01});
+  observer.observe(element);
+}
+
 function makeBaseViewer(host){
   const scene=new THREE.Scene();
   const camera=new THREE.PerspectiveCamera(34,1,.001,100);
   const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;host.prepend(renderer.domElement);
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;host.prepend(renderer.domElement);
   scene.add(new THREE.HemisphereLight(0xffffff,0x3b4742,2.4));
   const key=new THREE.DirectionalLight(0xffffff,3.1);key.position.set(3,5,4);scene.add(key);
   const fill=new THREE.DirectionalLight(0xdde9ff,1.6);fill.position.set(-4,2,-3);scene.add(fill);
@@ -20,8 +34,9 @@ function makeBaseViewer(host){
 
 // Original Onshape V8: preserve the accepted 66-component exploded viewer.
 const host=document.getElementById('v8-viewer');
-if(host){
+whenNearViewport(host,()=>{
   const hint=document.getElementById('viewer-hint'),explodeBtn=document.getElementById('explode-btn'),explodeSlider=document.getElementById('explode-slider'),resetBtn=document.getElementById('reset-btn');
+  if(hint)hint.textContent='Loading interactive CAD…';
   const V=makeBaseViewer(host);let parts=[],exploded=false,maxDim=1;
   const cleanName=o=>(o.name||'').toLowerCase().replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();
   const isOccurrence=o=>cleanName(o).startsWith('occurrence of ');
@@ -30,12 +45,13 @@ if(host){
   function setExplosion(){const t=exploded?Number(explodeSlider.value)/100:0;explodeBtn.classList.toggle('active',exploded);explodeBtn.textContent=exploded?'Assemble':'Explode';for(const p of parts)p.target.copy(p.base).addScaledVector(p.offset,t);}
   explodeBtn.onclick=()=>{exploded=!exploded;setExplosion()};explodeSlider.oninput=()=>{if(exploded)setExplosion()};resetBtn.onclick=()=>{exploded=false;setExplosion();V.camera.position.copy(V.defaultCamera);V.controls.target.set(0,0,0);V.controls.autoRotate=true;V.controls.update();};
   (function animate(){requestAnimationFrame(animate);for(const p of parts)p.obj.position.lerp(p.target,.085);V.controls.update();V.renderer.render(V.scene,V.camera);})();
-}
+});
 
 // SolidWorks V8: repaired Motion Study with independent explode controls.
 const motionHost=document.getElementById('solidworks-v8-viewer');
-if(motionHost){
+whenNearViewport(motionHost,()=>{
   const hint=document.getElementById('motion-viewer-hint');
+  if(hint)hint.textContent='Loading SolidWorks motion…';
   const controlsBar=motionHost.querySelector('.live-controls');
   const oldPlay=document.getElementById('motion-play-btn');
   const oldReset=document.getElementById('motion-reset-btn');
@@ -52,4 +68,4 @@ if(motionHost){
   new GLTFLoader().load('/Assem1MotionWebFixed-Final.glb',gltf=>{ghostOuterShell(gltf.scene);V.scene.add(gltf.scene);maxDim=V.frame(gltf.scene);parts=makeExplodeParts(gltf.scene);if(gltf.animations.length){mixer=new THREE.AnimationMixer(gltf.scene);action=mixer.clipAction(gltf.animations[0]);action.setLoop(THREE.LoopRepeat,Infinity);hint.textContent=`SolidWorks Motion Study · ${parts.length} expandable component groups`;}else{playBtn.disabled=true;hint.textContent='Interactive SolidWorks CAD · no embedded motion found';}},undefined,()=>{hint.textContent='SolidWorks model failed to load';playBtn.disabled=true;explodeBtn.disabled=true;});
   playBtn.onclick=()=>{if(!action)return;running=!running;if(running){action.paused=false;action.play();playBtn.textContent='Pause';playBtn.classList.add('active');}else{action.paused=true;playBtn.textContent='Play';playBtn.classList.remove('active');}};explodeBtn.onclick=()=>{exploded=!exploded;setExplosion();};explodeSlider.oninput=()=>{if(exploded)setExplosion();};resetBtn.onclick=()=>{running=false;exploded=false;if(action){action.stop();action.reset();}playBtn.textContent='Play';playBtn.classList.remove('active');setExplosion();V.camera.position.copy(V.defaultCamera);V.controls.target.set(0,0,0);V.controls.autoRotate=true;V.controls.update();};
   (function animate(){requestAnimationFrame(animate);const dt=clock.getDelta();if(mixer&&running)mixer.update(dt);for(const p of parts)p.wrapper.position.lerp(p.target,.085);V.controls.update();V.renderer.render(V.scene,V.camera);})();
-}
+});

@@ -33,8 +33,35 @@
 .brand-copy{display:block;line-height:1.15}
 .brand-sub{white-space:nowrap}
 .site-header nav{flex-shrink:0}
+
+/* Pine Script project: real TradingView artifact instead of decorative code art. */
+[data-added-project="pine"] .project-visual{
+  background:#eef3ec;
+  overflow:hidden;
+}
+[data-added-project="pine"] .code-art{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  background-image:linear-gradient(rgba(20,31,30,.04),rgba(20,31,30,.04)),url('/b73d8e0d-1dd3-4aad-b4f8-d88c99cf3f21.png');
+  background-size:cover;
+  background-position:center center;
+  transform:none;
+}
+[data-added-project="pine"] .code-art>*{display:none}
+[data-added-project="pine"] .visual-id,
+[data-added-project="pine"] .placeholder-label{
+  z-index:2;
+  background:rgba(245,244,240,.92);
+  color:#202c2b;
+  padding:5px 8px;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
 @media(max-width:760px){
   .site-header{position:sticky;top:0}
   .brand-symbol{width:34px;height:36px;flex-basis:34px;font-size:22px}
   .brand-dot{top:6px;right:6px;width:3px;height:3px}
+  [data-added-project="pine"] .code-art{background-position:center center}
 }

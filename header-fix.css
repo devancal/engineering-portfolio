@@ -34,9 +34,9 @@
 .brand-sub{white-space:nowrap}
 .site-header nav{flex-shrink:0}
 
-/* Pine Script project: real TradingView artifact instead of decorative code art. */
+/* Pine Script project: portfolio-styled conceptual chart. */
 [data-added-project="pine"] .project-visual{
-  background:#eef3ec;
+  background:#202c2b;
   overflow:hidden;
 }
 [data-added-project="pine"] .code-art{
@@ -44,7 +44,7 @@
   inset:0;
   width:100%;
   height:100%;
-  background-image:linear-gradient(rgba(20,31,30,.04),rgba(20,31,30,.04)),url('/b73d8e0d-1dd3-4aad-b4f8-d88c99cf3f21.png');
+  background-image:url('/pine-strategy-study.svg');
   background-size:cover;
   background-position:center center;
   transform:none;
@@ -53,7 +53,7 @@
 [data-added-project="pine"] .visual-id,
 [data-added-project="pine"] .placeholder-label{
   z-index:2;
-  background:rgba(245,244,240,.92);
+  background:rgba(245,244,240,.94);
   color:#202c2b;
   padding:5px 8px;
   backdrop-filter:blur(4px);

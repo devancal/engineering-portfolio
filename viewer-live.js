@@ -24,16 +24,12 @@ function makeCadLoadingNotice(){
   notice.textContent='Loading interactive CAD — the page may pause briefly for a few seconds.';
   notice.style.cssText='position:fixed;right:18px;bottom:18px;z-index:9999;max-width:310px;padding:12px 14px;background:#202c2b;color:#eef2ec;border:1px solid #607267;font:9px/1.55 var(--mono,monospace);letter-spacing:.45px;box-shadow:0 8px 24px #0002;transition:opacity .25s ease';
   document.body.appendChild(notice);
-  return {
-    set(text){notice.textContent=text;},
-    done(){notice.textContent='Interactive CAD ready.';setTimeout(()=>{notice.style.opacity='0';setTimeout(()=>notice.remove(),260);},650);}
-  };
+  return {set(text){notice.textContent=text;},done(){notice.textContent='Interactive CAD ready.';setTimeout(()=>{notice.style.opacity='0';setTimeout(()=>notice.remove(),260);},650);}};
 }
 
 function initOnshape(){
   return new Promise(resolve=>{
-    const host=document.getElementById('v8-viewer');
-    if(!host){resolve();return;}
+    const host=document.getElementById('v8-viewer');if(!host){resolve();return;}
     const hint=document.getElementById('viewer-hint'),explodeBtn=document.getElementById('explode-btn'),explodeSlider=document.getElementById('explode-slider'),resetBtn=document.getElementById('reset-btn');
     if(hint)hint.textContent='Loading interactive CAD…';
     const V=makeBaseViewer(host);let parts=[],exploded=false,maxDim=1;
@@ -49,19 +45,10 @@ function initOnshape(){
 
 function initSolidWorks(){
   return new Promise(resolve=>{
-    const motionHost=document.getElementById('solidworks-v8-viewer');
-    if(!motionHost){resolve();return;}
-    const hint=document.getElementById('motion-viewer-hint');
-    if(hint)hint.textContent='Loading SolidWorks motion…';
-    const controlsBar=motionHost.querySelector('.live-controls');
-    const oldPlay=document.getElementById('motion-play-btn');
-    const oldReset=document.getElementById('motion-reset-btn');
-    if(oldPlay)oldPlay.remove();if(oldReset)oldReset.remove();
-    const playBtn=document.createElement('button');playBtn.type='button';playBtn.textContent='Play';
-    const explodeBtn=document.createElement('button');explodeBtn.type='button';explodeBtn.textContent='Explode';
-    const explodeSlider=document.createElement('input');explodeSlider.type='range';explodeSlider.min='0';explodeSlider.max='100';explodeSlider.value='55';explodeSlider.setAttribute('aria-label','SolidWorks explosion distance');
-    const resetBtn=document.createElement('button');resetBtn.type='button';resetBtn.textContent='Reset';
-    controlsBar?.append(playBtn,explodeBtn,explodeSlider,resetBtn);
+    const motionHost=document.getElementById('solidworks-v8-viewer');if(!motionHost){resolve();return;}
+    const hint=document.getElementById('motion-viewer-hint');if(hint)hint.textContent='Loading SolidWorks motion…';
+    const controlsBar=motionHost.querySelector('.live-controls');const oldPlay=document.getElementById('motion-play-btn');const oldReset=document.getElementById('motion-reset-btn');if(oldPlay)oldPlay.remove();if(oldReset)oldReset.remove();
+    const playBtn=document.createElement('button');playBtn.type='button';playBtn.textContent='Play';const explodeBtn=document.createElement('button');explodeBtn.type='button';explodeBtn.textContent='Explode';const explodeSlider=document.createElement('input');explodeSlider.type='range';explodeSlider.min='0';explodeSlider.max='100';explodeSlider.value='55';explodeSlider.setAttribute('aria-label','SolidWorks explosion distance');const resetBtn=document.createElement('button');resetBtn.type='button';resetBtn.textContent='Reset';controlsBar?.append(playBtn,explodeBtn,explodeSlider,resetBtn);
     const V=makeBaseViewer(motionHost);const clock=new THREE.Clock();let mixer=null,action=null,running=false,exploded=false,maxDim=1,parts=[];
     function makeExplodeParts(root){root.updateMatrixWorld(true);const overall=new THREE.Box3().setFromObject(root);const center=overall.getCenter(new THREE.Vector3());const assembly=root.getObjectByName('Assem1')||root.children[0]||root;const candidates=[...assembly.children];return candidates.map((obj,i)=>{obj.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(obj);const c=box.getCenter(new THREE.Vector3());const dir=c.clone().sub(center);if(dir.lengthSq()<1e-8){const a=(i/candidates.length)*Math.PI*2;dir.set(Math.cos(a),Math.sin(a),((i%3)-1)*.25);}dir.normalize();const wrapper=new THREE.Group();wrapper.name=`explode-wrapper-${i}`;assembly.add(wrapper);wrapper.add(obj);return {wrapper,target:new THREE.Vector3(),offset:dir.multiplyScalar(maxDim*.72)};});}
     function ghostOuterShell(root){const targets=[{match:'engine block',opacity:.30},{match:'cylinder head',opacity:.34},{match:'cam cover',opacity:.26}];root.traverse(obj=>{const n=(obj.name||'').toLowerCase().replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();const t=targets.find(x=>n.includes(x.match));if(!t)return;obj.traverse(child=>{if(!child.isMesh||!child.material)return;const mats=Array.isArray(child.material)?child.material:[child.material];const cloned=mats.map(m=>{const c=m.clone();c.transparent=true;c.opacity=t.opacity;c.depthWrite=false;c.side=THREE.DoubleSide;if('roughness' in c)c.roughness=.78;if('metalness' in c)c.metalness=0;if(c.color)c.color.lerp(new THREE.Color(0xeeeeea),.45);c.needsUpdate=true;return c;});child.material=Array.isArray(child.material)?cloned:cloned[0];child.renderOrder=2;});});}
@@ -71,6 +58,15 @@ function initSolidWorks(){
     (function animate(){requestAnimationFrame(animate);const dt=clock.getDelta();if(mixer&&running)mixer.update(dt);for(const p of parts)p.wrapper.position.lerp(p.target,.085);V.controls.update();V.renderer.render(V.scene,V.camera);})();
   });
 }
+
+function initVercelAnalytics(){
+  window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};
+  if(!document.querySelector('script[src="/_vercel/insights/script.js"]')){
+    const script=document.createElement('script');script.defer=true;script.src='/_vercel/insights/script.js';document.head.appendChild(script);
+  }
+}
+
+initVercelAnalytics();
 
 window.addEventListener('load',()=>{
   const notice=makeCadLoadingNotice();

@@ -68,13 +68,32 @@ function initVercelAnalytics(){
 
 function initProjectDialogClose(){
   const dialog=document.querySelector('#detail-dialog');
+  const closeButton=document.querySelector('#close-dialog');
   if(!dialog)return;
-  dialog.addEventListener('click',event=>{
-    const closeButton=event.target.closest('.dialog-close');
-    if(!closeButton)return;
+  const cleanup=()=>{
+    document.body.classList.remove('modal-open');
+    if(location.hash.startsWith('#project-')||location.hash==='#resume')history.replaceState(null,'',location.pathname+location.search);
+  };
+  const closeDialog=()=>{
+    if(dialog.open)dialog.close();
+    cleanup();
+  };
+  closeButton?.addEventListener('click',event=>{
     event.preventDefault();
-    dialog.close();
+    event.stopPropagation();
+    closeDialog();
   });
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&dialog.open){
+      event.preventDefault();
+      closeDialog();
+    }
+  },true);
+  dialog.addEventListener('cancel',event=>{
+    event.preventDefault();
+    closeDialog();
+  });
+  dialog.addEventListener('close',cleanup);
 }
 
 initVercelAnalytics();

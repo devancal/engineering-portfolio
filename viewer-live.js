@@ -66,7 +66,19 @@ function initVercelAnalytics(){
   }
 }
 
+function initProjectDialogClose(){
+  const dialog=document.querySelector('#detail-dialog');
+  if(!dialog)return;
+  dialog.addEventListener('click',event=>{
+    const closeButton=event.target.closest('.dialog-close');
+    if(!closeButton)return;
+    event.preventDefault();
+    dialog.close();
+  });
+}
+
 initVercelAnalytics();
+initProjectDialogClose();
 
 window.addEventListener('load',()=>{
   const notice=makeCadLoadingNotice();

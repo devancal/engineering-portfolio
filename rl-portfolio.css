@@ -1,0 +1,17 @@
+/* Reinforcement-learning progression */
+.rl-visual{background:#202c2b!important;color:#eef2ec;overflow:hidden}
+.rl-visual .visual-id,.rl-visual .placeholder-label{color:#dce6df}
+.rl-art{position:absolute;inset:0;display:flex;align-items:center;padding:58px 24px 45px;background-image:linear-gradient(#8ca0940d 1px,transparent 1px),linear-gradient(90deg,#8ca0940d 1px,transparent 1px);background-size:24px 24px}
+.rl-path{width:100%;display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1.12fr;align-items:center;gap:8px}
+.rl-path>span{min-width:0;border:1px solid #718078;padding:15px 10px;background:#253331;font:8px var(--mono);letter-spacing:.7px}
+.rl-path>span b{display:block;font:9px var(--mono);letter-spacing:1.2px;color:#e99180;margin-bottom:7px}
+.rl-path>span small{display:block;margin-top:7px;font:6.5px/1.4 var(--mono);letter-spacing:.2px;color:#9fb0a5}
+.rl-path>i{font-style:normal;color:#899a90;font-size:15px}
+.rl-path .rl-racer{border-color:#bc382a;background:#2b3633}
+.rl-stage-list{display:grid;gap:12px;margin-top:15px}
+.rl-stage-list>div{border:1px solid var(--line);padding:15px 16px}
+.rl-stage-list strong{display:block;font-size:13px;font-weight:600}
+.rl-stage-list span{display:inline-block;margin:7px 0 9px;font:8px var(--mono);letter-spacing:1px;color:var(--accent)}
+.rl-stage-list p{font-size:11px!important;line-height:1.75!important;color:var(--muted);margin:0!important}
+.rl-stage-feature{border-color:#b7beb7!important;background:#eeefe9}
+@media(max-width:760px){.rl-art{padding:50px 14px 38px}.rl-path{grid-template-columns:1fr 1fr;gap:7px}.rl-path>i{display:none}.rl-path>span{padding:10px 8px}.rl-path>span small{font-size:6px}.rl-visual .placeholder-label{font-size:6.5px}}

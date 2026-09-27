@@ -14,12 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Replace InternAI portfolio entry with RL progression
-        shell: python
+        shell: python {0}
         run: |
           from pathlib import Path
           import re
 
-          # Replace the static InternAI card with one RL progression card.
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
           rl_card = '''<article class="project-card" data-category="code" data-project="rl"><a class="project-visual code-visual rl-visual" href="#project-rl" aria-label="Reinforcement learning agents project"><span class="visual-id">07 / REINFORCEMENT LEARNING</span><div class="rl-art" aria-hidden="true"><div class="rl-path"><span><b>01</b> CONTROL<small>CartPole · trained</small></span><i>→</i><span><b>02</b> LANDING<small>LunarLander · in development</small></span><i>→</i><span><b>03</b> NAVIGATION<small>Maze · in development</small></span><i>→</i><span class="rl-racer"><b>04</b> RACING<small>Active development</small></span></div></div><span class="placeholder-label"><span aria-hidden="true">◈</span> Control → landing → navigation → racing</span></a><div class="project-copy"><div class="project-topline"><span class="eyebrow">PYTHON / REINFORCEMENT LEARNING</span><span>IN PROGRESS</span></div><h3><a href="#project-rl">Reinforcement Learning<br>Agents</a></h3><p>A progression of reinforcement-learning projects, starting with basic control and building toward an autonomous racing agent with increasingly complex observations, actions, and reward design.</p><div class="tags"><span>Python</span><span>Q-Learning</span><span>Reinforcement Learning</span></div><a class="text-link" href="#project-rl">Inside the project <span aria-hidden="true">↗</span></a></div></article>'''
@@ -29,7 +28,6 @@ jobs:
               raise SystemExit(f'Expected one InternAI card, replaced {n}')
           p.write_text(s, encoding='utf-8')
 
-          # Add an RL detail page and update labels/count-derived copy in app.js.
           p = Path('app.js')
           s = p.read_text(encoding='utf-8')
           rl_obj = r'''},
@@ -43,7 +41,6 @@ jobs:
           s = s.replace("'Engineering computation · web development · debugging · quantitative scripting'", "'Engineering computation · reinforcement learning · debugging · quantitative scripting'")
           p.write_text(s, encoding='utf-8')
 
-          # Add RL-specific visual/detail styling without disturbing the main stylesheet.
           p = Path('header-fix.css')
           s = p.read_text(encoding='utf-8')
           css = r'''

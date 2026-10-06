@@ -6,9 +6,9 @@ const read=n=>fs.readFileSync(`content/${n}.html`,'utf8');
 const esc=s=>s.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');
 const plain=s=>s.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
 const render=p=>`<div class="detail-inner"><div class="detail-kicker"><span>${p.k}</span><span>${p.d}</span></div><h2 id="detail-title">${p.t}</h2><p class="detail-lead">${p.lead}</p><dl class="detail-meta"><div><dt>CONTEXT</dt><dd>${p.role}</dd></div><div><dt>TOOLS</dt><dd>${p.tools}</dd></div><div><dt>FOCUS</dt><dd>${p.focus}</dd></div></dl><div class="detail-grid"><div><h3>Goal & challenge</h3>${p.left}</div><div><h3>Approach & engineering work</h3>${p.right}</div></div><div class="detail-note"><h3>ITERATION / TAKEAWAY</h3><p>${p.note}</p></div></div>`;
-fs.mkdirSync('projects',{recursive:true});
+fs.rmSync('projects',{recursive:true,force:true});fs.mkdirSync('projects',{recursive:true});
 fs.writeFileSync('index.html',home);
-const details=Object.fromEntries(Object.entries(projects).map(([id,p])=>[id,render(p)]));details['project-rl']=read('rl-detail');details['project-code']=read('code-detail');
+const details=Object.fromEntries(Object.entries(projects).map(([id,p])=>[id,render(p)]));details['project-rl']=read('rl-detail');
 const assets={
  'project-v8':['/V8%20engine.glb','Download original Onshape model (23 MB)','Assembly close-up · exploded view · constraint detail'],
  'project-solidworks':['/Assem1MotionWebFixed-Final.glb','Download SolidWorks motion model (24 MB)','Motion recording · crankshaft correction · cam and gear mates'],

@@ -16,12 +16,14 @@ for(const file of pages){
   if(hash)assert(fs.readFileSync(actual,'utf8').includes(`id="${hash}"`),`${file}: missing anchor ${url}`);
  }
 }
-const home=fs.readFileSync('index.html','utf8');assert.equal((home.match(/<article /g)||[]).length,7);assert(!home.includes('src="/viewer-live.js"'));assert(!home.includes('src="https://ajax.googleapis.com'));
+const home=fs.readFileSync('index.html','utf8');assert.equal((home.match(/<article /g)||[]).length,6);assert(!home.includes('src="/viewer-live.js"'));assert(!home.includes('src="https://ajax.googleapis.com'));
 for(const file of ['app.js','viewer-live.js','scripts/build.mjs'])execFileSync(process.execPath,['--check',file]);
 // Exercise actual filter and legacy routing code without fetching browser dependencies.
 const buttons=['all','mechanical','code'].map(filter=>({dataset:{filter},classList:{toggle(){}},setAttribute(){},addEventListener(_,fn){this.click=fn;}}));
-const cards=['mechanical','mechanical','mechanical','code','code','code','code'].map(category=>({dataset:{category}}));const count={};let redirected;
+const cards=['mechanical','mechanical','mechanical','code','code','code'].map(category=>({dataset:{category}}));const count={};let redirected;
 const document={querySelectorAll(selector){return selector==='[data-filter]'?buttons:selector==='.project-card'?cards:[];},querySelector(selector){return selector==='#filter-count'?count:null;}};
-vm.runInNewContext(fs.readFileSync('app.js','utf8'),{document,location:{hash:'#project-rl',replace(url){redirected=url;}}});
-assert.equal(redirected,'/projects/project-rl');buttons[1].click();assert.equal(count.textContent,'3 entries');assert.equal(cards.filter(c=>!c.hidden).length,3);buttons[2].click();assert.equal(count.textContent,'4 entries');buttons[0].click();assert.equal(count.textContent,'7 entries');
+vm.runInNewContext(fs.readFileSync('app.js','utf8'),{window:{},document,location:{hash:'#project-rl',replace(url){redirected=url;}}});
+assert.equal(redirected,'/projects/project-rl');buttons[1].click();assert.equal(count.textContent,'3 entries');assert.equal(cards.filter(c=>!c.hidden).length,3);buttons[2].click();assert.equal(count.textContent,'3 entries');buttons[0].click();assert.equal(count.textContent,'6 entries');
 console.log(`PASS: ${pages.length} pages, local links/assets, anchors, metadata, syntax, filters, and legacy routing. Browser layout/WebGL QA remains unverified.`);
+
+const numbers=[...home.matchAll(/class="visual-id"[^>]*>(\d+) \//g)].map(m=>m[1]);assert.deepEqual(numbers,['01','02','03','04','05','06']);assert(!home.includes('project-code'));assert(!home.includes('class="load-cad"'));

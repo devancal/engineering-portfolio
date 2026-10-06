@@ -10,6 +10,11 @@
       "source": "/site",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/projects/project-code",
+      "destination": "/#work",
+      "permanent": false
     }
   ],
   "headers": [

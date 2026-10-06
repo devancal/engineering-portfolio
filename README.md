@@ -18,4 +18,4 @@ Edit `content/home.html`, `content/projects.json`, and the case-study HTML in `c
 
 See [HANDOFF.md](HANDOFF.md) for architecture, content updates, evidence limitations, asset needs and verification details.
 
-The actual GLB models and résumé remain in the repository. CAD viewers load only when requested; static project content works without JavaScript.
+The actual GLB models and résumé remain in the repository. CAD viewers load automatically as they approach the viewport; static project content works without JavaScript.

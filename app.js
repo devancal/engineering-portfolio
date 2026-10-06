@@ -1,6 +1,7 @@
 // All project content is rendered at build time. JavaScript enhances it only.
 const legacy=location.hash.slice(1);
-if(/^project-(v8|solidworks|pump|python|pine|rl)$/.test(legacy)) location.replace('/projects/'+legacy);
+if(/^project-(v8|solidworks|pump|pine|rl)$/.test(legacy)) location.replace('/projects/'+legacy);
+if(legacy==='project-python') location.replace('/projects/project-v8#kinematics');
 if(legacy==='project-code') location.replace('/#work');
 if(legacy==='resume') location.replace('/Calabrese_Devan_Resume.pdf');
 const filters=[...document.querySelectorAll('[data-filter]')];

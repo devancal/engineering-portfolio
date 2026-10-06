@@ -4,7 +4,7 @@
 Static HTML/CSS/JavaScript hosted on the existing Vercel project `engineering-portfolio`, connected to `devancal/engineering-portfolio`, production branch `main`. No database, upload server, authentication, or runtime secrets are required. This GitHub version supersedes the old Sites export; its old storage-binding problem does not apply to this application.
 
 ## Run and update
-Requires Node 22 or later. `npm run build` generates the homepage, six standalone project pages and sitemap, then packages public files into `dist/`. Vercel explicitly builds with `npm run build` and publishes `dist/`. `npm test` checks local links/assets, anchors, metadata, JavaScript syntax, actual filter behavior and legacy project routing. For local preview use any static server from the repository root (for example `python -m http.server 8000`). Generated project `.html` files work locally; Vercel clean URLs also support paths without `.html`.
+Requires Node 22 or later. `npm run build` generates the homepage, five standalone project pages and sitemap, then packages public files into `dist/`. Vercel explicitly builds with `npm run build` and publishes `dist/`. `npm test` checks local links/assets, anchors, metadata, JavaScript syntax, actual filter behavior and legacy project routing. For local preview use any static server from the repository root (for example `python -m http.server 8000`). Generated project `.html` files work locally; Vercel clean URLs also support paths without `.html`.
 
 - Homepage and cards: `content/home.html`.
 - Onshape, SolidWorks, pump, kinematics and Pine Script case studies: `content/projects.json`. Fields containing HTML are trusted author content, not an upload interface.
@@ -33,3 +33,10 @@ Automated static and interaction checks pass. Browser layout, external CDN behav
 
 ## Dependencies and deployment
 Three.js 0.180.0 via jsDelivr; model-viewer 4.1.0 via Google CDN, both loaded as their viewer approaches the viewport. These services require network access. Main portfolio content remains accessible when JavaScript/CDNs fail. Vercel serves static files with clean URLs and the existing résumé redirect. No new paid services or backend were introduced.
+
+## Integrated V8 analysis (October 2026)
+The separate Python card and page are folded into `/projects/project-v8#kinematics`; old Python URLs redirect there. `content/v8-analysis.html` owns the story, `kinematics-math.js` owns the analytic equations and SVG generation, and `kinematics-view.js` owns RPM/angle controls and slowed playback. Build renders the 3,000 RPM state as static SVG; JavaScript enhances it with zero external dependencies. The SolidWorks page links to the same analysis.
+
+Verified against the actual `v8_kinematics.py` at source commit `8424f27b058f3213513e921fa1c24d8373887156`. Running the original script reproduced 12.73 m/s and 4,579.50 m/s² at 3,000 RPM. All 3,601 samples were compared with the web implementation to absolute tolerance 1e-8. The regression fixture retains every degree plus the 81.1° / 278.9° velocity extrema (363 samples), directly extracted from that run. Tests also check rod length, 80 mm stroke, numerical derivatives and linear/quadratic RPM scaling. `npm test` includes these checks. The original repository includes animation source but no exported GIF/video; the website recreates its geometry using the same equations.
+
+Playback is 1/100 of physical speed and starts paused; RPM updates the underlying physical values. It pauses render work offscreen/background and supports angle scrubbing. No combustion, forces, stresses or full-engine dynamics are implied. Original source and both original PNG outputs are linked to the pinned source commit.

@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "scripts": {"build":"node scripts/build.mjs", "test":"node scripts/check.mjs"},
-  "engines": {"node": ">=22"}
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/check.mjs && node scripts/check-kinematics.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
 }

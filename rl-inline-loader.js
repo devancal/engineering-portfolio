@@ -1,1 +1,0 @@
-(()=>{const l=document.createElement('link');l.rel='stylesheet';l.href='/rl-portfolio.css';document.head.appendChild(l);const s=document.createElement('script');s.src='/rl-portfolio.js';s.defer=true;document.head.appendChild(s)})();

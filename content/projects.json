@@ -1,0 +1,62 @@
+{
+  "project-v8": {
+    "k": "02 / PERSONAL PROJECT",
+    "d": "JANUARY–MARCH 2026",
+    "t": "V8 Engine Internal Combustion Design",
+    "lead": "My first large engine CAD project: a multi-component V8 assembly built in Onshape to understand how dimensions, fit, piston motion, and cam–valve relationships interact inside a complete mechanism.",
+    "role": "Personal project",
+    "tools": "Onshape · Parametric CAD",
+    "focus": "Assembly & motion",
+    "left": "<p><strong>Goal.</strong> I chose a V8 because cars and engines are a major personal interest, and I wanted to move beyond isolated parts into a complete engine assembly. Before this, the water-pump project was my main assembly experience, so the V8 was a substantial step up in part count, fit, and mechanical interaction.</p><p><strong>Challenge.</strong> Dimensional accuracy became one of the biggest constraints. Small mistakes that looked harmless while modeling individual parts became much harder to correct once those parts reached the full assembly.</p>",
+    "right": "<ul><li><strong>Approach:</strong> Built a parametric, multi-component V8 assembly in Onshape and modeled the piston subassemblies around their mechanical relationships.</li><li><strong>Fit & motion:</strong> Checked component interaction as the assembly came together rather than treating each part as an isolated model.</li><li><strong>Motion constraint:</strong> Explored cam-to-valve motion using tangent mates because Onshape did not provide a dedicated cam mate for the mechanism.</li><li><strong>Iteration:</strong> Revised dimensions and geometry when interference or misalignment appeared during assembly.</li></ul>",
+    "note": "Tangent mates became difficult to manage across all 16 valves, which limited the cam–valve motion I could realistically build in the Onshape version. That limitation directly motivated the later SolidWorks rebuild, where dedicated cam and gear mates made a more complete driven mechanism possible. The project also changed how I approach CAD: I now put more emphasis on checking critical dimensions and interfaces before a mechanism becomes a completed assembly."
+  },
+  "project-solidworks": {
+    "k": "03 / SOLIDWORKS MOTION STUDY",
+    "d": "2026",
+    "t": "V8 Engine Motion Study",
+    "lead": "A second V8 built entirely in SolidWorks as a deliberate progression from the Onshape project—broadening my CAD proficiency and using cam, gear, and motion tools that allowed a more complete driven mechanism.",
+    "role": "Personal project",
+    "tools": "SolidWorks · Motion Study",
+    "focus": "CAD progression & mechanism motion",
+    "left": "<p><strong>Goal.</strong> I rebuilt the V8 in SolidWorks to become comfortable in another major CAD platform and to revisit the same mechanical system with a richer set of assembly and motion tools. Because I already understood the engine layout from the Onshape project, I could focus more directly on modeling decisions, mates, and motion.</p><p><strong>Challenge.</strong> I modeled every component myself. The crankshaft required multiple extrusions while preserving the geometry needed to align with the connecting rods, and the intake-manifold openings had to line up correctly with the cylinder heads.</p>",
+    "right": "<ul><li><strong>Assembly:</strong> Modeled the complete engine from individual SolidWorks parts and assembled them with coincident, concentric, width, cam, and gear mates.</li><li><strong>Progression:</strong> Used SolidWorks cam mates to build the cam-and-valve relationship that was difficult to achieve in the earlier Onshape version.</li><li><strong>Motion:</strong> Created the Motion Study by driving the crank gear as the motor input and using the assembly mates to transmit motion through the mechanism.</li><li><strong>Validation:</strong> Used the assembled mechanism and its motion relationships to expose fit and geometry issues that were not obvious at the individual-part level.</li></ul>",
+    "note": "Assembly checks exposed two concrete geometry problems. An exhaust mounting panel extended too far and overlapped nearby geometry, while one crankshaft extrusion was too short to align with a piston connecting rod. I returned to the source parts, corrected the dimensions, and rechecked the assembly. Those fixes are a better representation of the project than a perfect first-pass model: the assembly itself became a tool for finding design errors."
+  },
+  "project-pump": {
+    "k": "04 / COURSE PROJECT",
+    "d": "FALL 2025",
+    "t": "Water Pump CAD & Mechanism Design",
+    "lead": "A team course project centered on an animal-powered bucket-and-gear conveyor concept for moving water vertically and horizontally.",
+    "role": "Team course project · CAD lead",
+    "tools": "Onshape · CAD · Mechanism design",
+    "focus": "Water transport",
+    "left": "<p><strong>Goal.</strong> Our team needed to develop and present a mechanical concept for transporting water. The concept used an animal walking in a circular path as the input to a gear-driven bucket conveyor that could raise and move water through the system.</p><p><strong>My role.</strong> Although it was a team assignment, I created the entire CAD model myself. My teammates focused primarily on the presentation, and I also helped prepare and present the final slideshow to the class.</p>",
+    "right": "<ul><li><strong>Approach:</strong> Translated the team concept into the complete CAD assembly.</li><li><strong>Mechanism:</strong> Modeled the bucket-and-gear conveyor arrangement, including gears, shafts, buckets, and support structures.</li><li><strong>Communication:</strong> Turned the concept into a presentable assembly for the final class presentation and helped present the design.</li><li><strong>Scope:</strong> Kept the work focused on CAD and mechanism layout rather than claiming physical performance that was never tested.</li></ul>",
+    "note": "This project remained a CAD concept and was not physically fabricated or tested. The belt was not functional in the CAD model. That limitation is part of the project record and helped make the distinction between a modeled concept and a validated mechanism much clearer in my later work."
+  },
+  "project-python": {
+    "k": "05 / ENGINEERING COMPUTATION",
+    "d": "PERSONAL PROJECT",
+    "t": "V8 Crank-Slider Kinematics Analysis",
+    "lead": "A Python extension of my V8 CAD work using the engine’s 40 mm crank radius and 250 mm connecting-rod geometry to calculate and visualize piston motion through a complete crankshaft revolution.",
+    "role": "Personal project",
+    "tools": "Python · NumPy · Matplotlib",
+    "focus": "Crank-slider kinematics",
+    "left": "<p><strong>Goal.</strong> Connect the geometry of my V8 CAD model to engineering computation by translating the crank-slider mechanism into a mathematical model of piston displacement, velocity, and acceleration.</p><p><strong>Geometry.</strong> The model uses a 40 mm crank radius and 250 mm connecting rod from the CAD geometry, producing an 80 mm stroke and a connecting-rod/crank ratio of 6.25. I evaluated the primary case at an assumed 3,000 RPM analysis speed rather than treating that speed as a tested operating limit of the engine.</p><div style=\"margin-top:1.2rem;padding:1rem 1.1rem;background:#202c2b;color:#f5f4f0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.78rem;line-height:1.65;overflow:auto\"><div style=\"opacity:.62;margin-bottom:.45rem\"># piston displacement from TDC</div><div>A = L**2 - r**2 * np.sin(theta)**2</div><div>x = r*np.cos(theta) + np.sqrt(A)</div><div>displacement = (r + L) - x</div><div style=\"opacity:.62;margin-top:.55rem\"># crank speed → angular velocity</div><div>omega = rpm * 2*np.pi / 60</div></div>",
+    "right": "<ul><li><strong>3,000 RPM:</strong> Calculated a peak piston speed of 12.73 m/s and peak kinematic acceleration magnitude of 4,579.50 m/s².</li><li><strong>Geometry effect:</strong> Peak positive piston velocity occurs at 81.1° and peak negative velocity at 278.9°, showing the departure from simple harmonic motion caused by finite connecting-rod length.</li><li><strong>RPM study:</strong> Compared 1,000, 3,000, and 6,000 RPM. Peak speed increased from 4.24 to 25.45 m/s, while peak acceleration increased from 508.83 to 18,317.99 m/s².</li><li><strong>Visualization:</strong> Built displacement, velocity, and acceleration plots plus an animated crank, connecting rod, and reciprocating piston with live crank angle and displacement.</li></ul>",
+    "note": "For fixed geometry, the results demonstrate the expected linear relationship between crankshaft speed and peak piston velocity and the quadratic relationship between crankshaft speed and peak piston acceleration. Doubling speed from 3,000 to 6,000 RPM approximately doubled peak velocity while quadrupling peak acceleration. The analysis is kinematic only; component forces, combustion pressure, stress, friction, and material behavior are outside its scope."
+  },
+  "project-pine": {
+    "k": "06 / QUANTITATIVE SCRIPTING",
+    "d": "PERSONAL PROJECT",
+    "t": "Trading Strategy & Indicator Development",
+    "lead": "A collection of Pine Script experiments in TradingView focused on turning trading ideas and existing indicators into testable rules, then iterating on their behavior through debugging and backtesting.",
+    "role": "Personal project · AI-assisted implementation",
+    "tools": "Pine Script · TradingView",
+    "focus": "Logic · debugging · backtesting",
+    "left": "<p><strong>Trend Ribbon progression.</strong> I started from an existing Trend Ribbon indicator and converted its visual fast/slow ribbon behavior into a backtestable long-only strategy. I then experimented with earlier entries by comparing ribbon slope and convergence, and added state-based exit logic for early entries that did not develop as intended.</p><p><strong>HTF indicator.</strong> For a separate higher-timeframe market-context tool, I defined the behavior I wanted and used AI to help translate those requirements into Pine Script. I tested the result and made repeated changes as I refined the logic and chart behavior.</p>",
+    "right": "<ul><li><strong>Strategy conversion:</strong> Turned existing indicator behavior into explicit entry and exit rules with date controls, transaction-cost assumptions, and backtesting.</li><li><strong>Iteration:</strong> Modified signal timing, entry logic, risk behavior, and parameters after reviewing how earlier versions behaved.</li><li><strong>Custom logic:</strong> Worked with higher-timeframe structure, liquidity levels, volatility-relative movement, and fair-value-gap tracking in a separate indicator concept.</li><li><strong>Additional experiments:</strong> Adapted Gaussian Channel and Williams Alligator indicator concepts into configurable strategy experiments rather than claiming the underlying indicators as original work.</li></ul>",
+    "note": "I use AI as a programming aid, especially for syntax and initial implementation. My contribution is strongest in defining desired behavior, understanding and modifying the logic, debugging issues, testing changes, and iterating on the result. The underlying Trend Ribbon, Gaussian Channel, and Williams Alligator indicator concepts were not my original work."
+  }
+}

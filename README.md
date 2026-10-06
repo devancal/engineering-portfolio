@@ -1,47 +1,21 @@
 # Devan Calabrese — Engineering Portfolio
 
-Personal engineering portfolio for Devan Calabrese, a Mechanical Engineering student at The Ohio State University seeking Summer 2027 internship opportunities.
+Mechanical Engineering at Ohio State. CAD assemblies, motion studies, engineering computation and autonomous racing experiments for Summer 2027 internship applications.
 
-## Portfolio
+[Live portfolio](https://engineering-portfolio-nu.vercel.app/)
 
-The site is designed around real project evidence and engineering iteration rather than a generic résumé page. It includes interactive CAD, project case studies, technical background, education, and contact information.
+## Develop
 
-### Featured work
+Node 22+; no npm runtime dependencies or secrets.
 
-- **Onshape V8 Engine** — parametric multi-component assembly exploring piston motion, component fit, dimensional accuracy, and cam–valve relationships.
-- **SolidWorks V8 Motion Study** — a complete SolidWorks rebuild using assembly mates and a driven Motion Study, including documented geometry corrections discovered during assembly.
-- **Water Pump CAD & Mechanism Design** — course-project CAD assembly for an animal-powered bucket-and-gear water-transport concept.
-- **InternAI** — internship-discovery web application in development using browser-side résumé parsing, JavaScript matching/filtering, employer job feeds, and Vercel Serverless Functions.
+```sh
+npm run build
+npm test
+python -m http.server 8000
+```
 
-## Site features
+Edit `content/home.html`, `content/projects.json`, and the case-study HTML in `content/`, then build and commit generated pages. Vercel serves clean project URLs; a basic local server uses their `.html` paths.
 
-- Interactive GLB CAD viewers
-- Exploded Onshape V8 assembly controls
-- SolidWorks Motion Study playback
-- Interactive water-pump assembly
-- Project case-study detail views
-- Responsive layout and accessible navigation
-- SEO metadata, sitemap, and robots configuration
+See [HANDOFF.md](HANDOFF.md) for architecture, content updates, evidence limitations, asset needs and verification details.
 
-## Stack
-
-- HTML
-- CSS
-- JavaScript
-- Three.js
-- `<model-viewer>`
-- Vercel
-- GitHub
-
-## Engineering assets
-
-The repository includes the CAD assets used by the live viewers, the water-pump assembly drawing, and the résumé displayed on the portfolio.
-
-## Live portfolio
-
-https://engineering-portfolio-nu.vercel.app/
-
-## Contact
-
-- LinkedIn: https://www.linkedin.com/in/devancalabrese
-- Email: Calabrese.90@osu.edu
+The actual GLB models and résumé remain in the repository. CAD viewers load only when requested; static project content works without JavaScript.

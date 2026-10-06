@@ -25,3 +25,7 @@ for(const [id,raw] of Object.entries(details)){
 }
 fs.writeFileSync('sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${['',...Object.keys(details).map(id=>'/projects/'+id)].map(path=>`<url><loc>${origin}${path||'/'}</loc></url>`).join('')}</urlset>\n`);
 console.log(`Built homepage and ${Object.keys(details).length} standalone case studies.`);
+// Publish only public assets; keep authoring files and tooling out of the output.
+fs.rmSync('dist',{recursive:true,force:true});fs.mkdirSync('dist');
+for(const file of ['index.html','app.js','styles.css','header-fix.css','rl-portfolio.css','portfolio.css','viewer-live.js','favicon.svg','engine-study.svg','pine-strategy-study.svg','e84bbd75-1098-4746-987f-7dbf7aabd58d.png','Calabrese_Devan_Resume.pdf','Drawing 1.pdf','V8 engine.glb','Assem1MotionWebFixed-Final.glb','Fully Complete Project Assembly.glb','robots.txt','sitemap.xml','google1a1b2bca8ef23566.html'])fs.copyFileSync(file,'dist/'+file);
+for(const dir of ['assets','projects'])fs.cpSync(dir,'dist/'+dir,{recursive:true});

@@ -4,7 +4,7 @@
 Static HTML/CSS/JavaScript hosted on the existing Vercel project `engineering-portfolio`, connected to `devancal/engineering-portfolio`, production branch `main`. No database, upload server, authentication, or runtime secrets are required. This GitHub version supersedes the old Sites export; its old storage-binding problem does not apply to this application.
 
 ## Run and update
-Requires Node 22 or later. `npm run build` generates the homepage, seven standalone project pages and sitemap. `npm test` checks local links/assets, anchors, metadata, JavaScript syntax, actual filter behavior and legacy project routing. For local preview use any static server from the repository root (for example `python -m http.server 8000`). Generated project `.html` files work locally; Vercel clean URLs also support paths without `.html`.
+Requires Node 22 or later. `npm run build` generates the homepage, seven standalone project pages and sitemap, then packages public files into `dist/`. Vercel explicitly builds with `npm run build` and publishes `dist/`. `npm test` checks local links/assets, anchors, metadata, JavaScript syntax, actual filter behavior and legacy project routing. For local preview use any static server from the repository root (for example `python -m http.server 8000`). Generated project `.html` files work locally; Vercel clean URLs also support paths without `.html`.
 
 - Homepage and cards: `content/home.html`.
 - Onshape, SolidWorks, pump, kinematics and Pine Script case studies: `content/projects.json`. Fields containing HTML are trusted author content, not an upload interface.
